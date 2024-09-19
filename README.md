@@ -26,7 +26,7 @@ Champions - Cohort
 
 ## Theoretical approach
 
-<img src="man/figures/likert_scales1.png"  align="center" height="400"/>\>
+<img src="man/figures/likert_scales1.png"  align="center" height="400"/>
 
 **Figure 1.** Likert scales of the Potential for Conflict Index (PCI).
 
