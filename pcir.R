@@ -368,7 +368,7 @@ Additional information:
 
 ## Theoretical approach
 
-<img src=\"man/figures/likert_scales1.png\">
+<img src=\"man/figures/likert_scales1.png\"  align=\"center\" height=\"400\"/>>
 
 **Figure 1.** Likert scales of the Potential for Conflict Index (PCI).
 
@@ -384,7 +384,7 @@ Stages of the 'pcir' package:
 
 4. Create a bubble chart using the indices / Save [(Figure)](img src=\"man/figures/output_pci.png\").
 
-<img src=\"man/figures/diagrammer_pcir.png\">
+<img src=\"man/figures/diagrammer_pcir.png\" align=\"center\">
 
 **Figure 2.** Workflow of the 'pcir' package.
 
