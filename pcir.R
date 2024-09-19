@@ -368,15 +368,21 @@ Additional information:
 
 ## Theoretical approach
 
+<img src=\"man/figures/likert_scales1.png\">
+
 **Figure 1.** Likert scales of the Potential for Conflict Index (PCI).
 
 ## Workflow
 
 Stages of the 'pcir' package:
-1. Read the data input from the interviews;
+
+1. Read the data input from the interviews/ See exemple dataset [(Spreadsheet)]();
+
 2. Count the frequencies of responses within each question / Write [(Table 1)](https://github.com/fblpalmeira/pcir/blob/main/data/Table1.xlsx);
+
 3. Calculate the potential conflict index for each question / Write [(Table 2)](https://github.com/fblpalmeira/pcir/blob/main/data/Table2.xlsx);
-4. Create a bubble chart using the indices / Save [(Figure 1)](https://github.com/fblpalmeira/pcir/blob/main/data/output_pci.png).
+
+4. Create a bubble chart using the indices / Save [(Figure)](img src=\"man/figures/output_pci.png\").
 
 <img src=\"man/figures/diagrammer_pcir.png\">
 
