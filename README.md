@@ -19,9 +19,11 @@ currently be computed using software such as Excel, SPSS, and SAS, there
 is no dedicated R package available for conducting this specific
 analysis.
 
-Additional information: - [rOpenSci Champions
-Program](https://ropensci.org/champions/) - [Introducing rOpenSci
-Champions - Cohort
+The development of this package is part of my training in the [rOpenSci
+Champions Program](https://ropensci.org/champions/), supported by the
+Chan Zuckerberg Initiative.
+
+Additional information: - [Introducing rOpenSci Champions - Cohort
 2023-2024](https://ropensci.org/blog/2024/02/15/champions-program-champions-2024/)
 
 ## Theoretical approach
