@@ -1,12 +1,16 @@
+
 Package: pcir
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Type: Package
+Title: Potential for Conflict Index in R
+Version: 0.1.0
+Author: Francesca Palmeira [aut, cre]
+Maintainer: Francesca Palmeira <francesca@alumni.usp.br>
+Description: An R package to calculate, compare, and visualize the Potential for Conflict Index (PCI).
+License: MIT
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+LazyData: true
+RoxygenNote: 7.1.1
+URL: https://github.com/fblpalmeira/pcir
+BugReports: https://github.com/fblpalmeira/pcir/issues
+Date: 2024-09-12
+
