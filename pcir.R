@@ -350,17 +350,17 @@ library(pcir)
 
 ## Overview
 
-`pcir` is an R package designed to help researchers and practitioners calculate,
-compare, and visualize the Potential for Conflict Index (PCI). The PCI is a
-descriptive statistical method used to enhance understanding of outcomes in
-human dimensions research [(Manfredo et al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310) [Vaske et al. 2010)](https://www.tandfonline.com/doi/abs/10.1080/01490401003712648).
-The package will equip users with the tools required for calculating, comparing,
-and graphing the potential for conflict. The concepts of consensus and
-disagreement or conflict hold relevance across various fields, including economics,
-political science, psychology, sociology, and natural resources. It is worth
-noting that although PCI can currently be computed using software such as Excel,
-SPSS, and SAS, there is no dedicated R package available for conducting this
-specific analysis.
+`pcir`  is an R package developed to assist researchers and practitioners in
+calculating, comparing, and visualizing the Potential for Conflict Index (PCI)
+among stakeholders. PCI is a descriptive statistical method designed to enhance
+the understanding of outcomes in human dimensions research
+[(Manfredo et al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310)
+[Vaske et al. 2010)](https://www.tandfonline.com/doi/abs/10.1080/01490401003712648).
+The concepts of consensus, disagreement, and conflict are relevant across a wide
+range of disciplines, including economics, political science, psychology, sociology,
+and natural resource management. While PCI can currently be calculated using
+software such as Excel, SPSS, and SAS, there has been no dedicated R package
+available for this specific type of analysis—until now.
 
 The development of this package is part of my training in the
 [rOpenSci Champions Program](https://ropensci.org/champions/),
