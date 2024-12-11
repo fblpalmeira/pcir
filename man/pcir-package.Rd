@@ -12,16 +12,14 @@ Potential for Conflict Index (PCI).
 }
 \section{Functions}{
 
-- `counting()`: Summarize data by calculating counts, percentages, means, and standard deviations.
-- `pci()`: Compute the Potential for Conflict Index (PCI) from summary data.
-- `bubble()`: Create a bubble plot to visualize PCI results.
+\itemize{
+\item \code{counting()}: Summarize data by calculating counts, percentages, means, and standard deviations.
+\item \code{pci()}: Compute the Potential for Conflict Index (PCI) from summary data.
+\item \code{bubble()}: Create a bubble plot to visualize PCI results.
+}
 }
 
-\seealso{
-Useful links:
-\itemize{
-  \item \url{https://github.com/fblpalmeira/pcir}
-  \item Report bugs at \url{https://github.com/fblpalmeira/pcir/issues}
-}
+\author{
+\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
