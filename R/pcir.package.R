@@ -11,11 +11,12 @@
 #' - `bubble()`: Create a bubble plot to visualize PCI results.
 #'
 #' @name pcir-package
-#' @docType package
+#' @keywords internal
+"_PACKAGE"
+#' @import Hmisc
 #' @import dplyr
 #' @import tidyr
 #' @import ggplot2
-#' @import Hmisc
 #' @export counting
 #' @export pci
 #' @export bubble

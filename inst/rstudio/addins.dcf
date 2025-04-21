@@ -1,0 +1,4 @@
+Name: Reinstall and Test pcir
+Description: Reinstall the package and run basic tests.
+Binding: reinstall_and_test_addin
+Interactive: false

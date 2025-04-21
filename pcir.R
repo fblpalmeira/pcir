@@ -250,6 +250,12 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Depends: R (>= 4.0.0)
+Imports:
+    dplyr,
+    ggplot2,
+    tibble,
+    readr
 URL: https://github.com/fblpalmeira/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
 Date: 2025-04-18
