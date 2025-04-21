@@ -1,13 +1,11 @@
-available::available("pcir", browse = FALSE, user = "fblpalmeira")
-
 library(devtools)
 create_package("D:/Francesca/pcir")
 
 library(usethis)
-use_package("Hmisc")
 use_package("dplyr")
 use_package("tidyr")
 use_package("ggplot2")
+use_package("Hmisc")
 
 # Set the directory for saving R scripts
 r_directory <- file.path("D:/Francesca/pcir", "R")
@@ -42,7 +40,7 @@ counting <- function(df1) {
     #select(2:6) %>%
     pivot_longer(everything()) %>%
     group_by(name, value) %>%
-    dplyr::summarise(Count = n()) %>%
+    summarise(Count = n()) %>%
     group_by(name) %>%
     mutate(\`%\` = 100 * (Count / sum(Count)),
            Mean = weighted.mean(value, Count),
@@ -139,7 +137,7 @@ pcir_package_code <- "
 #' - `bubble()`: Create a bubble plot to visualize PCI results.
 #'
 #' @name pcir-package
-#' @keywords internal
+#' @docType package
 #' @import dplyr
 #' @import tidyr
 #' @import ggplot2
@@ -164,7 +162,7 @@ counting <- function(df1) {
     #select(2:6) %>%
     pivot_longer(everything()) %>%
     group_by(name, value) %>%
-    dplyr::summarise(Count = n()) %>%
+    summarise(Count = n()) %>%
     group_by(name) %>%
     mutate(`%` = 100 * (Count / sum(Count)),
            Mean = weighted.mean(value, Count),
@@ -240,19 +238,19 @@ writeLines(pcir_package_code, file.path(r_directory, "pcir.package.R"))
 # Define the content of the DESCRIPTION file
 description_text <- "
 Package: pcir
+Type: Package
 Title: Potential for Conflict Index in R
-Version: 0.0.0.9000
-Authors@R:
-  person('Francesca', 'Palmeira', email = 'francesca@alumni.usp.br', role = c('aut', 'cre'),
-         comment = c(ORCID = '0000-0002-7597-1157'))
+Version: 0.1.0
+Author: Francesca Palmeira [aut, cre]
+Maintainer: Francesca Palmeira <francesca@alumni.usp.br>
 Description: An R package to calculate, compare, and visualize the Potential for Conflict Index (PCI).
-License: MIT + file LICENSE
+License: MIT
 Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+LazyData: true
+RoxygenNote: 7.1.1
 URL: https://github.com/fblpalmeira/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
-Date: 2025-04-18
+Date: 2024-09-12
 "
 
 # Write the description to a DESCRIPTION file
@@ -341,7 +339,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = '#>',
-  fig.path = 'man/figures/logo_pcir.png',
+  fig.path = 'man/figures/logo_pcir.png', # Remove the trailing comma
   out.width = '100%',
   eval = TRUE)
 
@@ -352,19 +350,19 @@ library(pcir)
 
 ## Overview
 
-`pcir` is an R package developed to assist researchers and practitioners in calculating,
-comparing, and visualizing the Potential for Conflict Index (PCI) among stakeholders.
-PCI is a descriptive statistical method designed to enhance the understanding of
-outcomes in human dimensions research[(Manfredo et al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310)
+`pcir`  is an R package developed to assist researchers and practitioners in
+calculating, comparing, and visualizing the Potential for Conflict Index (PCI)
+among stakeholders. PCI is a descriptive statistical method designed to enhance
+the understanding of outcomes in human dimensions research
+[(Manfredo et al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310)
 [Vaske et al. 2010)](https://www.tandfonline.com/doi/abs/10.1080/01490401003712648).
-
 The concepts of consensus, disagreement, and conflict are relevant across a wide
-range of disciplines, including economics, political science, psychology,
-sociology, and natural resource management. Although PCI can be calculated using
-software such as Excel, SPSS, and SAS, no dedicated R package existed for this
-analysis — until now.
+range of disciplines, including economics, political science, psychology, sociology,
+and natural resource management. While PCI can currently be calculated using
+software such as Excel, SPSS, and SAS, there has been no dedicated R package
+available for this specific type of analysis—until now.
 
-This package was developed as part of my training in the
+The development of this package is part of my training in the
 [rOpenSci Champions Program](https://ropensci.org/champions/),
 supported by the Chan Zuckerberg Initiative.
 
@@ -376,19 +374,19 @@ Additional information:
 
 <img src=\"man/figures/likert_scales1.png\"  align=\"center\" height=\"400\"/>
 
-**Figure 1.** Likert scales used in the Potential for Conflict Index (PCI).
+**Figure 1.** Likert scales of the Potential for Conflict Index (PCI).
 
 ## Workflow
 
-Steps implemented in the 'pcir' package:
+Stages of the 'pcir' package:
 
-# 1. Read the input data from interviews – see example dataset [(Spreadsheet)]();
+1. Read the data input from the interviews/ See exemple dataset [(Spreadsheet)]();
 
-# 2. Count the frequency of responses for each question – see [(Table 1)]();
+2. Count the frequencies of responses within each question / Write [(Table 1)](https://github.com/fblpalmeira/pcir/blob/main/data/Table1.xlsx);
 
-# 3. Calculate the PCI for each question – see [(Table 2)]();
+3. Calculate the potential conflict index for each question / Write [(Table 2)](https://github.com/fblpalmeira/pcir/blob/main/data/Table2.xlsx);
 
-# 4. Generate a bubble chart to visualize the results – see [(Figure)]().
+4. Create a bubble chart using the indices / Save [(Figure)]().
 
 <img src=\"man/figures/diagrammer_pcir.png\" align=\"center\">
 
@@ -396,34 +394,34 @@ Steps implemented in the 'pcir' package:
 
 ## Features
 
-- `counting()`: Summarizes data by calculating counts, percentages, means, and standard deviations.
+- **`counting()`** summarize data by calculating counts, percentages, means, and
+standard deviations.
 
-- `pci()`: Computes the Potential for Conflict Index from summary data.
+- **`pci()`** compute the Potential for Conflict Index from summary data.
 
-- `bubble()`: Visualizes PCI results using a bubble plot.
+- **`bubble()`** visualize PCI results using a bubble plot.
 
 ## Installation
 
-Install the development version of `pcir` directly from GitHub:
+You can install the development version of `pcir` directly from GitHub:
 
 ```r
 # Uncomment the line below if devtools is not installed
 # install.packages(\"devtools\")
-
 devtools::install_github(\"fblpalmeira/pcir\")
 ```
 
 ## Usage
 
-After installation, load the package:
+Load the package if pcir is already installed.
 
 ```r
+# Load the Package:
 library(pcir)
 ```
 
-Example dataset:
-
 ```r
+# Example dataset:
 df1 <- data.frame(
   A = c(-1, 2, 2, 3, -1),
   B = c(-1, 2, 3, -1, 2),
@@ -433,21 +431,23 @@ df1 <- data.frame(
   )
 ```
 
-Count responses:
+Counting function:
 
 ```r
+# The counting function summarizes data by counts, percentages, means, and standard deviations
 df_count <- counting(df1)
 df_count
 ```
 
-Calculate PCI:
+PCI function:
 
 ```r
+# The pci function calculates the Potential for Conflict Index (PCI)
 df_pci <- pci(df_count)
 df_pci
 ```
 
-Visualize with a bubble plot:
+Bubble plot function:
 
 ```r
 # The bubble function creates a bubble plot to visualize the PCI results
@@ -457,7 +457,7 @@ bubble_plot # Display the bubble plot
 
 <img src=\"man/figures/output_pci.png\">
 
-**Figure 3.** Bubble chart illustrating the Potential for Conflict Indices.
+**Figure 3.** Bubble graph illustranting the Potencial Conflict Indices.
 
 ## References
 
@@ -471,18 +471,15 @@ Leisure Sciences, 32(3), 240-254.
 
 ## Citation
 
-If you use the `pcir` package in your work, please cite it as follows:
-
 ```r
+# If you use the `pcir` package in your work, please cite it as follows:
 citation(package = 'pcir')
 ```
-
-Example output:
 
 ```r
 To cite the 'pcir' package in publications, use:
 
-  Palmeira FBL (2024). _pcir: Potential for Conflict Index in
+  Palmeira F (2024). _pcir: Potential for Conflict Index in
   R_. R package version 0.1.0,
   <https://github.com/fblpalmeira/pcir>.
 
@@ -490,7 +487,7 @@ The BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {pcir: Potential for Conflict Index in R},
-    author = {Francesca Belem Lopes Palmeira},
+    author = {Francesca Palmeira},
     year = {2024},
     note = {R package version 0.1.0},
     url = {https://github.com/fblpalmeira/pcir},
@@ -502,37 +499,6 @@ The BibTeX entry for LaTeX users is
 This package is licensed under the [MIT License](https://github.com/fblpalmeira/pcir?tab=MIT-1-ov-file).
 See the LICENSE file for more details.
 
-## Bug Reports
-
-If you encounter any bugs or issues, please report them on the [GitHub Issues](https://github.com/fblpalmeira/pcir/issues) page.
-
-To report a bug in a GitHub repository, you need to have a GitHub account.
-The account is required to interact with the repository, such as creating issues,
-leaving comments, and tracking updates related to the issue.
-
-If you don't have an account, you can create one for free on [GitHub](https://github.com/join.). Once your
-account is created, you'll be able to access repositories and easily report issues.
-
-How to Create an Issue:
-
-- To create an issue, go to the Issues tab of your GitHub repository, which will be
-visible just below the repository name, next to Pull Requests.
-
-- Click on the **New Issue** button and fill in the details about the bug or problem
-encountered.
-
-- Users can do this at any time, and you will receive a notification when a new
-issue is created.
-
-## Discussions
-
-The **Discussions** section is the space for the `pcir` community to have conversations,
-ask questions, and post answers without opening issues. It’s a great place for
-users to interact informally, share ideas, discuss how to use the package, and
-seek help with problems or questions without the need to create a formal issue.
-
-You can join the conversation and start discussing here: [pcir Discussions](https://github.com/fblpalmeira/pcir/discussions)
-
 ## Contact
 
 For any questions or inquiries, please contact Francesca Palmeira at
@@ -543,13 +509,13 @@ francesca@alumni.usp.br.
 writeLines(readme_rmd_content, file.path(local_dir, "README.Rmd"))
 
 #Add README.md to the Git stage
-repo_url <- git2r::repository(local_dir) git2r::add(repo_url, "README.Rmd")
+#repo_url <- git2r::repository(local_dir) git2r::add(repo_url, "README.Rmd")
 
 #Commit the README.Rmd file
-git2r::commit(repo_url, "Add README.Rmd")
+#git2r::commit(repo_url, "Add README.Rmd")
 
 #Push the commit to the remote repository
-git2r::push(repo_url)
+#git2r::push(repo_url)
 rmarkdown::render("README.Rmd")
 
 # Initialize the website structure (only needed once)
@@ -583,27 +549,28 @@ writeLines(config_content, file.path(local_dir, "_pkgdown.yml"))
 # Build the site again to apply the config (if you added it)
 pkgdown::build_site()
 pkgbuild::check_build_tools(debug = TRUE)
-Sys.setenv(PATH = paste(Sys.getenv("PATH"), "C:/rtools45/usr/bin", sep=";"))
+Sys.setenv(PATH = paste(Sys.getenv("PATH"), "C:/rtools40/usr/bin", sep=";"))
 install.packages("devtools")
 devtools::find_rtools()  # Check if Rtools is correctly detected
-devtools::build()
+#devtools::build()
 # Initialize git repository if not already initialized (skip if already done)
-repo <- repository()
+#repo <- repository()
 
 # Stage all the changes, especially in the 'docs/' folder
-add(repo, "*")
+#add(repo, "*")
 
 # Commit the changes (including the docs folder)
-commit(repo, message = "Build and deploy pkgdown site to GitHub Pages")
+#commit(repo, message = "Build and deploy pkgdown site to GitHub Pages")
 
 # Push the changes to GitHub (you may need to authenticate if this is the first push)
 # Define the remote origin URL (your GitHub repository)
-remote_add(repo, "origin", "https://github.com/fblpalmeira/pcir.git")
+#remote_add(repo, "origin", "https://github.com/fblpalmeira/pcir.git")
 
 # Push to the GitHub repository (you may be prompted for credentials)
-push(repo, name = "origin", refspec = "refs/heads/main")
+#push(repo, name = "origin", refspec = "refs/heads/master")
 
 # Document, build, and install the package
 devtools::document()
 devtools::build()
 devtools::install()
+
