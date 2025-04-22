@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 library(pcir)
 ```
 
-# pcir: Potential for Conflict Index in R <a href="https://fblpalmeira.github.io/pcir/"><img src="man/figures/pcir_logo.png" alt="pcir website" align="right" height="139"/></a>
+# pcir: Potential for Conflict Index in R <a href='https://fblpalmeira.github.io/pcir/'><img src='man/figures/pcir_logo.png' alt='pcir website' align='right' height='139'/></a>
 
 ## Overview
 
@@ -40,7 +40,7 @@ Additional information:
 
 ## Theoretical approach
 
-![Likert scales used in PCI calculation](reference/figures/likert_scales1.png)
+<img src='man/figures/likert_scales1.png'  align='center' height='400'/>
 
 **Figure 1.** Likert scales used in the Potential for Conflict Index (PCI).
 
@@ -56,7 +56,7 @@ Steps implemented in the 'pcir' package:
 
  4. Generate a bubble chart to visualize the results – see [(Figure)]().
 
-![Diagram showing the PCI workflow](reference/figures/diagrammer_pcir.png)
+<img src='man/figures/diagrammer_pcir.png' align='center'>
 
 **Figure 2.** Workflow of the `pcir` package.
 
@@ -121,7 +121,7 @@ bubble_plot <- bubble(df_pci)
 bubble_plot # Display the bubble plot
 ```
 
-![Bubble chart showing PCI comparison output](reference/figures/output_pci.png)
+<img src='man/figures/output_pci.png'>
 
 **Figure 3.** Bubble chart illustrating the Potential for Conflict Indices.
 
