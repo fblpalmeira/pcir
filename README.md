@@ -159,15 +159,15 @@ Example output:
 ``` r
 To cite the 'pcir' package in publications, use:
 
-  Palmeira F (2025). _pcir: Potential for Conflict Index in
-  R_. R package version 0.0.0.9000,
+  Palmeira F, Wundervald B (2025). _pcir: Potential for
+  Conflict Index in R_. R package version 0.0.0.9000,
   <https://github.com/fblpalmeira/pcir>.
 
 The BibTeX entry for LaTeX users is
 
   @Manual{,
     title = {pcir: Potential for Conflict Index in R},
-    author = {Francesca Belem Lopes Palmeira},
+    author = {Francesca Belem Lopes Palmeira and Bruna Wundervald},
     year = {2025},
     note = {R package version 0.0.0.9000},
     url = {https://github.com/fblpalmeira/pcir},
