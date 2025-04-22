@@ -7,7 +7,7 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = '#>',
-  fig.path = 'man/figures/logo_pcir.png', # Remove the trailing comma
+  fig.path = 'man/figures/logo_pcir.png',
   out.width = '100%',
   eval = TRUE)
 
@@ -40,7 +40,7 @@ Additional information:
 
 ## Theoretical approach
 
-<img src=\"man/figures/likert_scales1.png\"  align=\"center\" height=\"400\"/>
+<img src="man/figures/likert_scales1.png"  align="center" height="400"/>
 
 **Figure 1.** Likert scales used in the Potential for Conflict Index (PCI).
 
@@ -56,7 +56,7 @@ Steps implemented in the 'pcir' package:
 
 # 4. Generate a bubble chart to visualize the results – see [(Figure)]().
 
-<img src=\"man/figures/diagrammer_pcir.png\" align=\"center\">
+<img src="man/figures/diagrammer_pcir.png" align="center">
 
 **Figure 2.** Workflow of the 'pcir' package.
 
@@ -74,9 +74,9 @@ Install the development version of `pcir` directly from GitHub:
 
 ```r
 # Uncomment the line below if devtools is not installed
-# install.packages(\"devtools\")
+# install.packages("devtools")
 
-devtools::install_github(\"fblpalmeira/pcir\")
+devtools::install_github("fblpalmeira/pcir")
 ```
 
 ## Usage
@@ -121,7 +121,7 @@ bubble_plot <- bubble(df_pci)
 bubble_plot # Display the bubble plot
 ```
 
-<img src=\"man/figures/output_pci.png\">
+<img src="man/figures/output_pci.png">
 
 **Figure 3.** Bubble chart illustrating the Potential for Conflict Indices.
 
@@ -203,3 +203,4 @@ You can join the conversation and start discussing here: [pcir Discussions](http
 
 For any questions or inquiries, please contact Francesca Palmeira at
 francesca@alumni.usp.br.
+
