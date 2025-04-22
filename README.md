@@ -94,12 +94,12 @@ Example dataset:
 
 ``` r
 df1 <- data.frame(
-  A = c(-1, 2, 2, 3, -1),
-  B = c(-1, 2, 3, -1, 2),
-  C = c(1, 2, -2, 3, -1),
-  D = c(3, 2, 1, -1, -2),
-  E = c(2, 3, 1, -1, -3)
-  )
+  A = c(-1, -1, -1, -1, -1),
+  B = c(-1, 1, 1, -1, 1),
+  C = c(1, 1, 1, 1, -1),
+  D = c(-1, -1, 1, 1, 1),
+  E = c(1, 1, -1, -1, -1)
+)
 ```
 
 Count responses:
@@ -159,8 +159,8 @@ Example output:
 ``` r
 To cite the 'pcir' package in publications, use:
 
-  Palmeira F (2024). _pcir: Potential for Conflict Index in
-  R_. R package version 0.1.0,
+  Palmeira F (2025). _pcir: Potential for Conflict Index in
+  R_. R package version 0.0.0.9000,
   <https://github.com/fblpalmeira/pcir>.
 
 The BibTeX entry for LaTeX users is
@@ -169,24 +169,24 @@ The BibTeX entry for LaTeX users is
     title = {pcir: Potential for Conflict Index in R},
     author = {Francesca Belem Lopes Palmeira},
     year = {2024},
-    note = {R package version 0.1.0},
+    note = {R package version 0.0.0.9000},
     url = {https://github.com/fblpalmeira/pcir},
   }
 ```
 
 ## License
 
-This package is licensed under the [MIT
-License](https://github.com/fblpalmeira/pcir?tab=MIT-1-ov-file). See the
-LICENSE file for more details.
+This package is licensed under the MIT License. See the
+[LICENSE](https://github.com/fblpalmeira/pcir?tab=MIT-1-ov-file) file
+for more details.
 
 ## Bug Reports
 
-If you encounter any bugs or issues, please report them on the [GitHub
-Issues](https://github.com/fblpalmeira/pcir/issues) page.
+If you encounter any bugs or issues, please report them on the GitHub
+[Issues](https://github.com/fblpalmeira/pcir/issues) page.
 
 Note: To report a bug, you need a GitHub account. You can create one for
-free on [GitHub](https://github.com/join.).
+free on [GitHub](https://github.com/join).
 
 How to Create an Issue:
 
