@@ -604,10 +604,10 @@ Sys.setenv(PATH = paste(Sys.getenv("PATH"), "C:/rtools45/usr/bin", sep=";"))
 devtools::find_rtools()  # Check if Rtools is correctly detected
 devtools::build()
 # Initialize git repository if not already initialized (skip if already done)
-repo <- repository()
+repo <- git2r::repository()
 
 # Stage all the changes, especially in the 'docs/' folder
-add(repo, "*")
+git2r::add(repo, "*")
 
 # Commit the changes (including the docs folder)
 git2r::commit(repo, message = "Build and deploy pkgdown site to GitHub Pages")

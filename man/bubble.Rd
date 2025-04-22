@@ -24,9 +24,13 @@ value as the size of the bubbles.
 Create a bubble plot to visualize PCI results.
 }
 \examples{
+data <- data.frame(
+  Category = rep(c('A', 'B', 'C'), each = 3),
+  Value = c(-1, 0, 1, -1, 0, 1, -1, 0, 1)
+)
+df2 <- counting(data)
 df3 <- pci(df2)
-p <- bubble(df3)
-print(p)
+bubble(df3)
 df3 <- pci(df2)
 bubble(df3)
 }
