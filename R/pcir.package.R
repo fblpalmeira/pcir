@@ -12,10 +12,10 @@
 #'
 #' @name pcir-package
 #' @keywords internal
-#' @import dplyr
-#' @import tidyr
-#' @import ggplot2
 #' @import Hmisc
+#' @import dplyr
+#' @import ggplot2
+#' @import tidyr
 #' @export counting
 #' @export pci
 #' @export bubble

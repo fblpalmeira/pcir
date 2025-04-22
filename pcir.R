@@ -140,10 +140,10 @@ pcir_package_code <- "
 #'
 #' @name pcir-package
 #' @keywords internal
-#' @import dplyr
-#' @import tidyr
-#' @import ggplot2
 #' @import Hmisc
+#' @import dplyr
+#' @import ggplot2
+#' @import tidyr
 #' @export counting
 #' @export pci
 #' @export bubble
@@ -250,6 +250,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
+Imports:
+    Hmisc,
+    dplyr,
+    ggplot2,
+    tidyr
 URL: https://github.com/fblpalmeira/pcir
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
@@ -483,7 +488,7 @@ Example output:
 ```r
 To cite the 'pcir' package in publications, use:
 
-  Palmeira FBL (2024). _pcir: Potential for Conflict Index in
+  Palmeira F (2024). _pcir: Potential for Conflict Index in
   R_. R package version 0.1.0,
   <https://github.com/fblpalmeira/pcir>.
 
@@ -544,7 +549,8 @@ francesca@alumni.usp.br.
 writeLines(readme_rmd_content, file.path(local_dir, "README.Rmd"))
 
 #Add README.md to the Git stage
-repo_url <- git2r::repository(local_dir) git2r::add(repo_url, "README.Rmd")
+repo_url <- git2r::repository(local_dir)
+git2r::add(repo_url, "README.Rmd")
 
 #Commit the README.Rmd file
 git2r::commit(repo_url, "Add README.Rmd")
@@ -564,17 +570,15 @@ template:
   bootstrap: 5
   bootswatch: flatly
 
-# Navbar settings
 navbar:
   structure:
-    left:
-      - Reference: reference
-      - Articles: articles
-  right:
-    - icon: fa-github
-      href: https://github.com/fblpalmeira/pcir
+    - left:
+        - reference
+        - articles
+    - right:
+        - icon: fa-github
+          href: https://github.com/fblpalmeira/pcir
 
-# URL of the pkgdown website
 url: https://fblpalmeira.github.io/pcir/
 "
 
