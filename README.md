@@ -7,7 +7,7 @@
 in calculating, comparing, and visualizing the Potential for Conflict
 Index (PCI) among stakeholders. PCI is a descriptive statistical method
 designed to enhance the understanding of outcomes in human dimensions
-research[(Manfredo et
+research [(Manfredo et
 al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310)
 [Vaske et
 al. 2010)](https://www.tandfonline.com/doi/abs/10.1080/01490401003712648).

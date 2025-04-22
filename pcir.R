@@ -245,15 +245,18 @@ bubble <- function(df3) {
 # Write the content to a file called pcir.package.R
 writeLines(pcir_package_code, file.path(r_directory, "pcir.package.R"))
 
-# Define the content of the DESCRIPTION file
+# Define o conteúdo do DESCRIPTION com coautoria e todos os metadados
 description_text <- "
 Package: pcir
 Title: Potential for Conflict Index in R
 Version: 0.0.0.9000
-Authors@R:
-  person('Francesca', 'Palmeira', email = 'francesca@alumni.usp.br', role = c('aut', 'cre'),
-         comment = c(ORCID = '0000-0002-7597-1157'))
-Description: An R package to calculate, compare, and visualize the Potential for Conflict Index (PCI).
+Authors@R: c(
+    person('Francesca Belem Lopes', 'Palmeira', email = 'francesca@alumni.usp.br',  role = c('aut', 'cre'),
+            comment = c(ORCID = '0000-0002-7597-1157')),
+    person('Bruna', 'Wundervald', email = 'brunadaviesw@gmail.com', role = 'aut',
+            comment = c(ORCID = '0000-0001-8163-220X')))
+Description: Provides functions to calculate, compare, and visualize the Potential for Conflict Index (PCI),
+    a descriptive statistic that summarizes the level of agreement or disagreement among stakeholders.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -273,7 +276,7 @@ Suggests:
     testthat,
     tibble
 Config/Needs/website: true
-URL: https://github.com/fblpalmeira/pcir
+URL: https://github.com/fblpalmeira/pcir,
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
 Date: 2025-04-23
@@ -379,7 +382,7 @@ library(pcir)
 `pcir` is an R package developed to assist researchers and practitioners in calculating,
 comparing, and visualizing the Potential for Conflict Index (PCI) among stakeholders.
 PCI is a descriptive statistical method designed to enhance the understanding of
-outcomes in human dimensions research[(Manfredo et al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310)
+outcomes in human dimensions research [(Manfredo et al. 2003;](https://www.tandfonline.com/doi/abs/10.1080/10871200304310)
 [Vaske et al. 2010)](https://www.tandfonline.com/doi/abs/10.1080/01490401003712648).
 
 The concepts of consensus, disagreement, and conflict are relevant across a wide
