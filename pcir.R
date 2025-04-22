@@ -91,14 +91,9 @@ bubble_code <- "
 #' values and other statistics.
 #' @return A ggplot2 object representing the bubble plot.
 #' @examples
-#' df <- data.frame(
-#'   name = c('A', 'B', 'C', 'D'),
-#'   value = c(10, 20, 15, 30),
-#'   Count = c(5, 10, 5, 10)
-#' )
-#' df2 <- counting(df)
 #' df3 <- pci(df2)
-#' bubble(df3)
+#' p <- bubble(df3)
+#' print(p)
 #' @export
 bubble <- function(df3) {
   ggplot(df3, aes(x = name, y = Mean, size = PCI)) +
@@ -110,24 +105,22 @@ bubble <- function(df3) {
     ylim(-1, 1) +
     scale_size_area(max_size = 14) +
     theme_minimal() +
-    theme(
-      panel.grid.major.y = element_blank(),
-      panel.grid.minor.y = element_blank(),
-      panel.grid.major.x = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      axis.title.x = element_text(size = 16),
-      axis.title.y = element_text(size = 16),
-      axis.text.x = element_text(size = 14, angle = 45, vjust = 1, hjust = 1),
-      axis.text.y = element_text(size = 14),
-      axis.line.x = element_line(colour = 'white'),
-      axis.line.y = element_line(colour = 'black'),
-      axis.ticks = element_line(colour = 'black'),
-      legend.key.size = unit(1, 'cm'),
-      legend.key.height = unit(1, 'cm'),
-      legend.key.width = unit(1, 'cm'),
-      legend.title = element_text(size = 16),
-      legend.text = element_text(size = 14)
-    )
+    theme(panel.grid.major.y = element_blank(),
+          panel.grid.minor.y = element_blank(),
+          panel.grid.major.x = element_blank(),
+          panel.grid.minor.x = element_blank(),
+          axis.title.x = element_text(size = 16),
+          axis.title.y = element_text(size = 16),
+          axis.text.x = element_text(size = 14, angle = 45, vjust = 1, hjust = 1),
+          axis.text.y = element_text(size = 14),
+          axis.line.x = element_line(colour = 'white'),
+          axis.line.y = element_line(colour = 'black'),
+          axis.ticks = element_line(colour = 'black'),
+          legend.key.size = unit(1, 'cm'),
+          legend.key.height = unit(1, 'cm'),
+          legend.key.width = unit(1, 'cm'),
+          legend.title = element_text(size = 16),
+          legend.text = element_text(size = 14))
 }
 "
 writeLines(bubble_code, file.path(r_directory, "bubble.R"))
@@ -147,26 +140,13 @@ pcir_package_code <- "
 #'
 #' @name pcir-package
 #' @keywords internal
-"_PACKAGE"
-
-# Import necessary packages
-#' @import Hmisc
 #' @import dplyr
 #' @import tidyr
 #' @import ggplot2
-#' @import tibble
-#' @import readr
-#' @import roxygen2
-#' @import devtools
-#' @import rprojroot
-#' @import stats
-#' @import utils
-
-# Export functions
+#' @import Hmisc
 #' @export counting
 #' @export pci
 #' @export bubble
-
 NULL
 
 #' Counting Function
@@ -180,10 +160,11 @@ NULL
 #' counting(df1)
 #' @export
 counting <- function(df1) {
-  df1[,-1] %>%
+  df1 [,-1]%>%
+    #select(2:6) %>%
     pivot_longer(everything()) %>%
     group_by(name, value) %>%
-    summarise(Count = n()) %>%
+    dplyr::summarise(Count = n()) %>%
     group_by(name) %>%
     mutate(`%` = 100 * (Count / sum(Count)),
            Mean = weighted.mean(value, Count),
@@ -206,24 +187,12 @@ counting <- function(df1) {
 #' pci(df2)
 #' @export
 pci <- function(df2) {
-  required_columns <- c("Count -1", "Count 1", "Total")
-  missing_columns <- setdiff(required_columns, names(df2))
-
-  if (length(missing_columns) > 0) {
-    stop(paste('Missing required columns:', paste(missing_columns, collapse = ', ')))
-  }
-
-  if (nrow(df2) == 0) {
-    stop('Input data has zero rows.')
-  }
-
   df2$nu <- 1 * df2$`Count -1`
   df2$na <- 1 * df2$`Count 1`
   df2$xt <- df2$nu + df2$na
   df2$z <- 1 * df2$Total
   df2$PCI <- (1 - (df2$na / df2$xt - df2$nu / df2$xt)) * df2$xt / df2$z
   df2 <- df2 %>% mutate_if(is.numeric, round, digits = 2)
-
   return(df2)
 }
 
@@ -281,19 +250,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-Depends: R (>= 4.0.0)
-Suggests:
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
-Imports:
-    Hmisc,
-    dplyr,
-    tidyr,
-    ggplot2,
-    roxygen2,
-    devtools,
-    rprojroot
 URL: https://github.com/fblpalmeira/pcir
+     https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
 Date: 2025-04-18
 "
@@ -350,7 +308,7 @@ library(gh)
 library(writexl)
 
 # Define your repository details
-repo <- "fblpalmeira/pcir"
+repo <- "fblpalmeira/pcir"  # Replace with your GitHub repository, e.g., 'user/repo'
 
 # Fetch the issues from the repository
 issues <- gh("GET /repos/:owner/:repo/issues", owner = "fblpalmeira", repo = "pcir")
@@ -637,7 +595,7 @@ repo <- repository()
 add(repo, "*")
 
 # Commit the changes (including the docs folder)
-commit(repo, message = "Build and deploy pkgdown site to GitHub Pages")
+git2r::commit(repo, message = "Build and deploy pkgdown site to GitHub Pages")
 
 # Push the changes to GitHub (you may need to authenticate if this is the first push)
 # Define the remote origin URL (your GitHub repository)

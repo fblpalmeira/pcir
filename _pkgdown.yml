@@ -1,4 +1,3 @@
-
 # Template settings
 template:
   bootstrap: 5
@@ -8,12 +7,14 @@ template:
 navbar:
   structure:
     left:
-      - Reference: reference
-      - Articles: articles
-  right:
-    - icon: fa-github
+      - reference
+      - articles
+    right:
+      - github
+  components:
+    github:
+      icon: fa-github
       href: https://github.com/fblpalmeira/pcir
 
 # URL of the pkgdown website
 url: https://fblpalmeira.github.io/pcir/
-

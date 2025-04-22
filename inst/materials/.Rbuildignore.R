@@ -6,3 +6,4 @@
   ^github_issues\.xlsx$
   ^materials$
   ^pcir\.R$
+  ^pcir\.Rproj$

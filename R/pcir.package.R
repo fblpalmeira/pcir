@@ -12,11 +12,10 @@
 #'
 #' @name pcir-package
 #' @keywords internal
-"_PACKAGE"
-#' @import Hmisc
 #' @import dplyr
 #' @import tidyr
 #' @import ggplot2
+#' @import Hmisc
 #' @export counting
 #' @export pci
 #' @export bubble
@@ -37,7 +36,7 @@ counting <- function(df1) {
     #select(2:6) %>%
     pivot_longer(everything()) %>%
     group_by(name, value) %>%
-    summarise(Count = n()) %>%
+    dplyr::summarise(Count = n()) %>%
     group_by(name) %>%
     mutate(`%` = 100 * (Count / sum(Count)),
            Mean = weighted.mean(value, Count),

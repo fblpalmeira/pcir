@@ -1,2 +1,10 @@
+^README\.Rmd$
+^_pkgdown\.yml$
+^github_issues\.xlsx$
+^citation\.txt$
+^docs$
 ^pcir\.Rproj$
+^pcir\.R$
+^README\.html$
+
 ^\.Rproj\.user$

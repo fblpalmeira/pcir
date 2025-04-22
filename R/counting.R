@@ -20,7 +20,7 @@ counting <- function(df1) {
     #select(2:6) %>%
     pivot_longer(everything()) %>%
     group_by(name, value) %>%
-    summarise(Count = n()) %>%
+    dplyr::summarise(Count = n()) %>%
     group_by(name) %>%
     mutate(`%` = 100 * (Count / sum(Count)),
            Mean = weighted.mean(value, Count),
