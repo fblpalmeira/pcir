@@ -1,0 +1,8 @@
+^README\.Rmd$
+  ^README\.html$
+  ^_pkgdown\.yml$
+  ^citation\.txt$
+  ^docs$
+  ^github_issues\.xlsx$
+  ^materials$
+  ^pcir\.R$

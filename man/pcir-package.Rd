@@ -23,3 +23,4 @@ Potential for Conflict Index (PCI).
 \strong{Maintainer}: First Last \email{first.last@example.com}
 
 }
+\keyword{internal}
