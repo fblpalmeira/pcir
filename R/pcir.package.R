@@ -17,6 +17,9 @@
 #' @import ggplot2
 #' @import magrittr
 #' @import tidyr
+#' @import devtools
+#' @import roxygen2
+#' @import rprojroot
 #' @export counting
 #' @export pci
 #' @export bubble

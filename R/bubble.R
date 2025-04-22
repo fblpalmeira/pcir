@@ -9,9 +9,13 @@
 #' values and other statistics.
 #' @return A ggplot2 object representing the bubble plot.
 #' @examples
+#' data <- data.frame(
+#'   Category = rep(c('A', 'B', 'C'), each = 3),
+#'   Value = c(-1, 0, 1, -1, 0, 1, -1, 0, 1)
+#' )
+#' df2 <- counting(data)
 #' df3 <- pci(df2)
-#' p <- bubble(df3)
-#' print(p)
+#' bubble(df3)
 #' @export
 bubble <- function(df3) {
   ggplot(df3, aes(x = name, y = Mean, size = PCI)) +

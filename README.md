@@ -29,7 +29,12 @@ Additional information:
 
 ## Theoretical approach
 
-<img src="man/figures/likert_scales1.png"  align="center" height="400"/>
+<figure>
+<img src="reference/figures/likert_scales1.png"
+alt="Likert scales used in PCI calculation" />
+<figcaption aria-hidden="true">Likert scales used in PCI
+calculation</figcaption>
+</figure>
 
 **Figure 1.** Likert scales used in the Potential for Conflict Index
 (PCI).
@@ -38,17 +43,24 @@ Additional information:
 
 Steps implemented in the ‘pcir’ package:
 
-# 1. Read the input data from interviews – see example dataset [(Spreadsheet)]();
+1.  Read the input data from interviews – see example dataset
+    [(Spreadsheet)]();
 
-# 2. Count the frequency of responses for each question – see [(Table 1)]();
+2.  Count the frequency of responses for each question – see [(Table
+    1)]();
 
-# 3. Calculate the PCI for each question – see [(Table 2)]();
+3.  Calculate the PCI for each question – see [(Table 2)]();
 
-# 4. Generate a bubble chart to visualize the results – see [(Figure)]().
+4.  Generate a bubble chart to visualize the results – see [(Figure)]().
 
-<img src="man/figures/diagrammer_pcir.png" align="center">
+<figure>
+<img src="reference/figures/diagrammer_pcir.png"
+alt="Diagram showing the PCI workflow" />
+<figcaption aria-hidden="true">Diagram showing the PCI
+workflow</figcaption>
+</figure>
 
-**Figure 2.** Workflow of the ‘pcir’ package.
+**Figure 2.** Workflow of the `pcir` package.
 
 ## Features
 
@@ -112,7 +124,12 @@ bubble_plot <- bubble(df_pci)
 bubble_plot # Display the bubble plot
 ```
 
-<img src="man/figures/output_pci.png">
+<figure>
+<img src="reference/figures/output_pci.png"
+alt="Bubble chart showing PCI comparison output" />
+<figcaption aria-hidden="true">Bubble chart showing PCI comparison
+output</figcaption>
+</figure>
 
 **Figure 3.** Bubble chart illustrating the Potential for Conflict
 Indices.
@@ -168,14 +185,8 @@ LICENSE file for more details.
 If you encounter any bugs or issues, please report them on the [GitHub
 Issues](https://github.com/fblpalmeira/pcir/issues) page.
 
-To report a bug in a GitHub repository, you need to have a GitHub
-account. The account is required to interact with the repository, such
-as creating issues, leaving comments, and tracking updates related to
-the issue.
-
-If you don’t have an account, you can create one for free on
-[GitHub](https://github.com/join.). Once your account is created, you’ll
-be able to access repositories and easily report issues.
+Note: To report a bug, you need a GitHub account. You can create one for
+free on [GitHub](https://github.com/join.).
 
 How to Create an Issue:
 
@@ -191,13 +202,10 @@ How to Create an Issue:
 
 ## Discussions
 
-The **Discussions** section is the space for the `pcir` community to
-have conversations, ask questions, and post answers without opening
-issues. It’s a great place for users to interact informally, share
-ideas, discuss how to use the package, and seek help with problems or
-questions without the need to create a formal issue.
+The **Discussions** section is the space for the `pcir` community to ask
+questions, share ideas, or get help without opening formal issues.
 
-You can join the conversation and start discussing here: [pcir
+Join the conversation here: [pcir
 Discussions](https://github.com/fblpalmeira/pcir/discussions)
 
 ## Contact

@@ -91,9 +91,13 @@ bubble_code <- "
 #' values and other statistics.
 #' @return A ggplot2 object representing the bubble plot.
 #' @examples
+#' data <- data.frame(
+#'   Category = rep(c('A', 'B', 'C'), each = 3),
+#'   Value = c(-1, 0, 1, -1, 0, 1, -1, 0, 1)
+#' )
+#' df2 <- counting(data)
 #' df3 <- pci(df2)
-#' p <- bubble(df3)
-#' print(p)
+#' bubble(df3)
 #' @export
 bubble <- function(df3) {
   ggplot(df3, aes(x = name, y = Mean, size = PCI)) +
@@ -145,6 +149,9 @@ pcir_package_code <- "
 #' @import ggplot2
 #' @import magrittr
 #' @import tidyr
+#' @import devtools
+#' @import roxygen2
+#' @import rprojroot
 #' @export counting
 #' @export pci
 #' @export bubble
@@ -258,14 +265,18 @@ Imports:
     magrittr,
     tidyr,
     stats,
-    utils
+    utils,
+    devtools,
+    roxygen2,
+    rprojroot
 Suggests:
     testthat,
     tibble
+Config/Needs/website: true
 URL: https://github.com/fblpalmeira/pcir
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
-Date: 2025-04-18
+Date: 2025-04-23
 "
 
 # Write the description to a DESCRIPTION file
@@ -275,7 +286,7 @@ writeLines(description_text, file.path(local_dir, "DESCRIPTION"))
 license_text <- "
 MIT License
 
-Copyright (c) 2024 Francesca Palmeira
+Copyright (c) 2025 Francesca Palmeira
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the \"Software\"), to deal
@@ -387,7 +398,7 @@ Additional information:
 
 ## Theoretical approach
 
-<img src=\"man/figures/likert_scales1.png\"  align=\"center\" height=\"400\"/>
+![Likert scales used in PCI calculation](reference/figures/likert_scales1.png)
 
 **Figure 1.** Likert scales used in the Potential for Conflict Index (PCI).
 
@@ -395,17 +406,17 @@ Additional information:
 
 Steps implemented in the 'pcir' package:
 
-# 1. Read the input data from interviews – see example dataset [(Spreadsheet)]();
+ 1. Read the input data from interviews – see example dataset [(Spreadsheet)]();
 
-# 2. Count the frequency of responses for each question – see [(Table 1)]();
+ 2. Count the frequency of responses for each question – see [(Table 1)]();
 
-# 3. Calculate the PCI for each question – see [(Table 2)]();
+ 3. Calculate the PCI for each question – see [(Table 2)]();
 
-# 4. Generate a bubble chart to visualize the results – see [(Figure)]().
+ 4. Generate a bubble chart to visualize the results – see [(Figure)]().
 
-<img src=\"man/figures/diagrammer_pcir.png\" align=\"center\">
+![Diagram showing the PCI workflow](reference/figures/diagrammer_pcir.png)
 
-**Figure 2.** Workflow of the 'pcir' package.
+**Figure 2.** Workflow of the `pcir` package.
 
 ## Features
 
@@ -468,7 +479,7 @@ bubble_plot <- bubble(df_pci)
 bubble_plot # Display the bubble plot
 ```
 
-<img src=\"man/figures/output_pci.png\">
+![Bubble chart showing PCI comparison output](reference/figures/output_pci.png)
 
 **Figure 3.** Bubble chart illustrating the Potential for Conflict Indices.
 
@@ -519,12 +530,7 @@ See the LICENSE file for more details.
 
 If you encounter any bugs or issues, please report them on the [GitHub Issues](https://github.com/fblpalmeira/pcir/issues) page.
 
-To report a bug in a GitHub repository, you need to have a GitHub account.
-The account is required to interact with the repository, such as creating issues,
-leaving comments, and tracking updates related to the issue.
-
-If you don't have an account, you can create one for free on [GitHub](https://github.com/join.). Once your
-account is created, you'll be able to access repositories and easily report issues.
+Note: To report a bug, you need a GitHub account. You can create one for free on [GitHub](https://github.com/join.).
 
 How to Create an Issue:
 
@@ -539,12 +545,10 @@ issue is created.
 
 ## Discussions
 
-The **Discussions** section is the space for the `pcir` community to have conversations,
-ask questions, and post answers without opening issues. It’s a great place for
-users to interact informally, share ideas, discuss how to use the package, and
-seek help with problems or questions without the need to create a formal issue.
+The **Discussions** section is the space for the `pcir` community  to ask questions,
+share ideas, or get help without opening formal issues.
 
-You can join the conversation and start discussing here: [pcir Discussions](https://github.com/fblpalmeira/pcir/discussions)
+Join the conversation here: [pcir Discussions](https://github.com/fblpalmeira/pcir/discussions)
 
 ## Contact
 
@@ -563,7 +567,7 @@ git2r::add(repo_url, "README.Rmd")
 git2r::commit(repo_url, "Add README.Rmd")
 
 #Push the commit to the remote repository
-git2r::push(repo_url)
+#git2r::push(repo_url)
 rmarkdown::render("README.Rmd")
 
 # Initialize the website structure (only needed once)
@@ -596,7 +600,7 @@ writeLines(config_content, file.path(local_dir, "_pkgdown.yml"))
 pkgdown::build_site()
 pkgbuild::check_build_tools(debug = TRUE)
 Sys.setenv(PATH = paste(Sys.getenv("PATH"), "C:/rtools45/usr/bin", sep=";"))
-install.packages("devtools")
+#install.packages("devtools")
 devtools::find_rtools()  # Check if Rtools is correctly detected
 devtools::build()
 # Initialize git repository if not already initialized (skip if already done)

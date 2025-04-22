@@ -32,4 +32,9 @@ All notable changes to this project will be documented in this file.
 - First public release published on GitHub.
 
 
+# pcir 0.0.0.9000
+
+- Initial release of the pcir package.
+- Implements `counting()`, `pci()`, and `bubble()` functions.
+- Adds RStudio Addin for quick reinstall and test.
 

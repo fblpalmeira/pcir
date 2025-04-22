@@ -64,32 +64,24 @@
 <div class="section level2">
 <h2 id="theoretical-approach">Theoretical approach<a class="anchor" aria-label="anchor" href="#theoretical-approach"></a>
 </h2>
-<p><img src="reference/figures/likert_scales1.png" align="center" height="400"></p>
-<p><strong>Figure 1.</strong> Likert scales used in the Potential for Conflict Index (PCI).</p>
+<figure><img src="reference/figures/likert_scales1.png" alt="Likert scales used in PCI calculation"><figcaption aria-hidden="true">
+Likert scales used in PCI calculation
+</figcaption></figure><p><strong>Figure 1.</strong> Likert scales used in the Potential for Conflict Index (PCI).</p>
 </div>
 <div class="section level2">
 <h2 id="workflow">Workflow<a class="anchor" aria-label="anchor" href="#workflow"></a>
 </h2>
 <p>Steps implemented in the ‘pcir’ package:</p>
+<ol style="list-style-type: decimal">
+<li><p>Read the input data from interviews – see example dataset <a href="">(Spreadsheet)</a>;</p></li>
+<li><p>Count the frequency of responses for each question – see <a href="">(Table 1)</a>;</p></li>
+<li><p>Calculate the PCI for each question – see <a href="">(Table 2)</a>;</p></li>
+<li><p>Generate a bubble chart to visualize the results – see <a href="">(Figure)</a>.</p></li>
+</ol>
+<figure><img src="reference/figures/diagrammer_pcir.png" alt="Diagram showing the PCI workflow"><figcaption aria-hidden="true">
+Diagram showing the PCI workflow
+</figcaption></figure><p><strong>Figure 2.</strong> Workflow of the <code>pcir</code> package.</p>
 </div>
-</div>
-<div class="section level1">
-<h1 id="id_1-read-the-input-data-from-interviews--see-example-dataset-spreadsheet">1. Read the input data from interviews – see example dataset <a href="">(Spreadsheet)</a>;<a class="anchor" aria-label="anchor" href="#id_1-read-the-input-data-from-interviews--see-example-dataset-spreadsheet"></a>
-</h1>
-</div>
-<div class="section level1">
-<h1 id="id_2-count-the-frequency-of-responses-for-each-question--see-table-1">2. Count the frequency of responses for each question – see <a href="">(Table 1)</a>;<a class="anchor" aria-label="anchor" href="#id_2-count-the-frequency-of-responses-for-each-question--see-table-1"></a>
-</h1>
-</div>
-<div class="section level1">
-<h1 id="id_3-calculate-the-pci-for-each-question--see-table-2">3. Calculate the PCI for each question – see <a href="">(Table 2)</a>;<a class="anchor" aria-label="anchor" href="#id_3-calculate-the-pci-for-each-question--see-table-2"></a>
-</h1>
-</div>
-<div class="section level1">
-<h1 id="id_4-generate-a-bubble-chart-to-visualize-the-results--see-figure">4. Generate a bubble chart to visualize the results – see <a href="">(Figure)</a>.<a class="anchor" aria-label="anchor" href="#id_4-generate-a-bubble-chart-to-visualize-the-results--see-figure"></a>
-</h1>
-<p><img src="reference/figures/diagrammer_pcir.png" align="center"></p>
-<p><strong>Figure 2.</strong> Workflow of the ‘pcir’ package.</p>
 <div class="section level2">
 <h2 id="features">Features<a class="anchor" aria-label="anchor" href="#features"></a>
 </h2>
@@ -137,8 +129,9 @@
 <code class="sourceCode R"><span><span class="co"># The bubble function creates a bubble plot to visualize the PCI results</span></span>
 <span><span class="va">bubble_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bubble.html">bubble</a></span><span class="op">(</span><span class="va">df_pci</span><span class="op">)</span></span>
 <span><span class="va">bubble_plot</span> <span class="co"># Display the bubble plot</span></span></code></pre></div>
-<p><img src="reference/figures/output_pci.png"></p>
-<p><strong>Figure 3.</strong> Bubble chart illustrating the Potential for Conflict Indices.</p>
+<figure><img src="reference/figures/output_pci.png" alt="Bubble chart showing PCI comparison output"><figcaption aria-hidden="true">
+Bubble chart showing PCI comparison output
+</figcaption></figure><p><strong>Figure 3.</strong> Bubble chart illustrating the Potential for Conflict Indices.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -178,8 +171,7 @@
 <h2 id="bug-reports">Bug Reports<a class="anchor" aria-label="anchor" href="#bug-reports"></a>
 </h2>
 <p>If you encounter any bugs or issues, please report them on the <a href="https://github.com/fblpalmeira/pcir/issues" class="external-link">GitHub Issues</a> page.</p>
-<p>To report a bug in a GitHub repository, you need to have a GitHub account. The account is required to interact with the repository, such as creating issues, leaving comments, and tracking updates related to the issue.</p>
-<p>If you don’t have an account, you can create one for free on <a href="https://github.com/join." class="external-link">GitHub</a>. Once your account is created, you’ll be able to access repositories and easily report issues.</p>
+<p>Note: To report a bug, you need a GitHub account. You can create one for free on <a href="https://github.com/join." class="external-link">GitHub</a>.</p>
 <p>How to Create an Issue:</p>
 <ul>
 <li><p>To create an issue, go to the Issues tab of your GitHub repository, which will be visible just below the repository name, next to Pull Requests.</p></li>
@@ -190,8 +182,8 @@
 <div class="section level2">
 <h2 id="discussions">Discussions<a class="anchor" aria-label="anchor" href="#discussions"></a>
 </h2>
-<p>The <strong>Discussions</strong> section is the space for the <code>pcir</code> community to have conversations, ask questions, and post answers without opening issues. It’s a great place for users to interact informally, share ideas, discuss how to use the package, and seek help with problems or questions without the need to create a formal issue.</p>
-<p>You can join the conversation and start discussing here: <a href="https://github.com/fblpalmeira/pcir/discussions" class="external-link">pcir Discussions</a></p>
+<p>The <strong>Discussions</strong> section is the space for the <code>pcir</code> community to ask questions, share ideas, or get help without opening formal issues.</p>
+<p>Join the conversation here: <a href="https://github.com/fblpalmeira/pcir/discussions" class="external-link">pcir Discussions</a></p>
 </div>
 <div class="section level2">
 <h2 id="contact">Contact<a class="anchor" aria-label="anchor" href="#contact"></a>
@@ -199,7 +191,6 @@
 <p>For any questions or inquiries, please contact Francesca Palmeira at <a href="mailto:francesca@alumni.usp.br" class="email">francesca@alumni.usp.br</a>.</p>
 </div>
 </div>
-
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
@@ -211,9 +202,8 @@
 <div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>
-<a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a>
-</li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 

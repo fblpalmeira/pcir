@@ -17,12 +17,16 @@ Imports:
     magrittr,
     tidyr,
     stats,
-    utils
+    utils,
+    devtools,
+    roxygen2,
+    rprojroot
 Suggests:
     testthat,
     tibble
+Config/Needs/website: true
 URL: https://github.com/fblpalmeira/pcir
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
-Date: 2025-04-18
+Date: 2025-04-23
 
