@@ -148,7 +148,7 @@ Example output:
 ```r
 To cite the 'pcir' package in publications, use:
 
-  Palmeira FBL (2024). _pcir: Potential for Conflict Index in
+  Palmeira F (2024). _pcir: Potential for Conflict Index in
   R_. R package version 0.1.0,
   <https://github.com/fblpalmeira/pcir>.
 
