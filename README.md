@@ -1,5 +1,5 @@
 
-# pcir: Potential for Conflict Index in R <a href="https://fblpalmeira.github.io/pcir/"><img src="man/figures/pcir_logo.png" alt="pcir website" align="right" height="139"/></a>
+# pcir: Potential for Conflict Index in R <a href='https://fblpalmeira.github.io/pcir/'><img src='man/figures/pcir_logo.png' alt='pcir website' align='right' height='139'/></a>
 
 ## Overview
 
@@ -29,12 +29,7 @@ Additional information:
 
 ## Theoretical approach
 
-<figure>
-<img src="reference/figures/likert_scales1.png"
-alt="Likert scales used in PCI calculation" />
-<figcaption aria-hidden="true">Likert scales used in PCI
-calculation</figcaption>
-</figure>
+<img src='man/figures/likert_scales1.png'  align='center' height='400'/>
 
 **Figure 1.** Likert scales used in the Potential for Conflict Index
 (PCI).
@@ -53,12 +48,7 @@ Steps implemented in the ‘pcir’ package:
 
 4.  Generate a bubble chart to visualize the results – see [(Figure)]().
 
-<figure>
-<img src="reference/figures/diagrammer_pcir.png"
-alt="Diagram showing the PCI workflow" />
-<figcaption aria-hidden="true">Diagram showing the PCI
-workflow</figcaption>
-</figure>
+<img src='man/figures/diagrammer_pcir.png' align='center'>
 
 **Figure 2.** Workflow of the `pcir` package.
 
@@ -124,12 +114,7 @@ bubble_plot <- bubble(df_pci)
 bubble_plot # Display the bubble plot
 ```
 
-<figure>
-<img src="reference/figures/output_pci.png"
-alt="Bubble chart showing PCI comparison output" />
-<figcaption aria-hidden="true">Bubble chart showing PCI comparison
-output</figcaption>
-</figure>
+<img src='man/figures/output_pci.png'>
 
 **Figure 3.** Bubble chart illustrating the Potential for Conflict
 Indices.
