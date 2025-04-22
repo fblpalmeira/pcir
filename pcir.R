@@ -143,6 +143,7 @@ pcir_package_code <- "
 #' @import Hmisc
 #' @import dplyr
 #' @import ggplot2
+#' @import magrittr
 #' @import tidyr
 #' @export counting
 #' @export pci
@@ -254,7 +255,13 @@ Imports:
     Hmisc,
     dplyr,
     ggplot2,
-    tidyr
+    magrittr,
+    tidyr,
+    stats,
+    utils
+Suggests:
+    testthat,
+    tibble
 URL: https://github.com/fblpalmeira/pcir
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
@@ -603,10 +610,10 @@ git2r::commit(repo, message = "Build and deploy pkgdown site to GitHub Pages")
 
 # Push the changes to GitHub (you may need to authenticate if this is the first push)
 # Define the remote origin URL (your GitHub repository)
-remote_add(repo, "origin", "https://github.com/fblpalmeira/pcir.git")
+#remote_add(repo, "origin", "https://github.com/fblpalmeira/pcir.git")
 
 # Push to the GitHub repository (you may be prompted for credentials)
-push(repo, name = "origin", refspec = "refs/heads/main")
+#push(repo, name = "origin", refspec = "refs/heads/main")
 
 # Document, build, and install the package
 devtools::document()

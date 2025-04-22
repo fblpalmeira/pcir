@@ -4,6 +4,7 @@
 #' reloads it, and runs all functions on example data for testing.
 #'
 #' @export
+#' @importFrom utils installed.packages remove.packages
 reinstall_and_test_addin <- function() {
   message("Reinstalling the 'pcir' package...")
 

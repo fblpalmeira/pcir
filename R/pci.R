@@ -8,6 +8,8 @@
 #' df2 <- counting(df1)
 #' pci(df2)
 #' @export
+#' @importFrom dplyr mutate_if
+#' @importFrom magrittr %>%
 pci <- function(df2) {
   df2$nu <- 1 * df2$`Count -1`  # For Count -1 column
   df2$na <- 1 * df2$`Count 1`   # For Count 1 column

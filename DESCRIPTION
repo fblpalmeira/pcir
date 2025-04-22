@@ -14,7 +14,13 @@ Imports:
     Hmisc,
     dplyr,
     ggplot2,
-    tidyr
+    magrittr,
+    tidyr,
+    stats,
+    utils
+Suggests:
+    testthat,
+    tibble
 URL: https://github.com/fblpalmeira/pcir
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues

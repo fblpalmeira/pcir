@@ -15,6 +15,7 @@
 #' result <- counting(df1)
 #' print(result)
 #' @export
+#' @importFrom stats weighted.mean
 counting <- function(df1) {
   df1 [,-1] %>%
     #select(2:6) %>%

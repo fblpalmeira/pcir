@@ -15,6 +15,7 @@
 #' @import Hmisc
 #' @import dplyr
 #' @import ggplot2
+#' @import magrittr
 #' @import tidyr
 #' @export counting
 #' @export pci
