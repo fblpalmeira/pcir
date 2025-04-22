@@ -168,7 +168,7 @@ The BibTeX entry for LaTeX users is
   @Manual{,
     title = {pcir: Potential for Conflict Index in R},
     author = {Francesca Belem Lopes Palmeira},
-    year = {2024},
+    year = {2025},
     note = {R package version 0.0.0.9000},
     url = {https://github.com/fblpalmeira/pcir},
   }
@@ -176,17 +176,17 @@ The BibTeX entry for LaTeX users is
 
 ## License
 
-This package is licensed under the MIT License. See the
-[LICENSE](https://github.com/fblpalmeira/pcir?tab=MIT-1-ov-file) file
-for more details.
+This package is licensed under the [MIT
+License](https://github.com/fblpalmeira/pcir?tab=MIT-1-ov-file) file for
+more details.
 
 ## Bug Reports
 
-If you encounter any bugs or issues, please report them on the GitHub
-[Issues](https://github.com/fblpalmeira/pcir/issues) page.
+If you encounter any bugs or issues, please report them on the [GitHub
+Issues](https://github.com/fblpalmeira/pcir/issues) page.
 
-Note: To report a bug, you need a GitHub account. You can create one for
-free on [GitHub](https://github.com/join).
+Note: To report a bug, you need a GitHub account, which you can join for
+free.
 
 How to Create an Issue:
 
@@ -194,19 +194,18 @@ How to Create an Issue:
   which will be visible just below the repository name, next to Pull
   Requests.
 
-- Click on the **New Issue** button and fill in the details about the
-  bug or problem encountered.
+- Click on the ‘New Issue’ button and fill in the details about the bug
+  or problem encountered.
 
 - Users can do this at any time, and you will receive a notification
   when a new issue is created.
 
 ## Discussions
 
-The **Discussions** section is the space for the `pcir` community to ask
-questions, share ideas, or get help without opening formal issues.
-
-Join the conversation here: [pcir
-Discussions](https://github.com/fblpalmeira/pcir/discussions)
+The [Discussions
+section](https://github.com/fblpalmeira/pcir/discussions) is the space
+for the `pcir` community to ask questions, share ideas, or get help
+without opening formal issues.
 
 ## Contact
 
