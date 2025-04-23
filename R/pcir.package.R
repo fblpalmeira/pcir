@@ -31,8 +31,8 @@ NULL
 #' @param df1 A data frame containing the data to be processed.
 #' @return A data frame with computed statistics.
 #' @examples
-#' df1 <- data.frame(A = c(-1, 2, 2, 3, -1), B = c(-1, 2, 3, -1, 2),
-#'                   C = c(1, 2, -2, 3, -1), D = c(3, 2, 1, -1, -2), E = c(2, 3, 1, -1, -3))
+#' df1 <- data.frame(A = c(-1, -1, -1, -1, -1), B = c(-1, 1, 1, -1, 1)),
+#'                   C = c(1, 1, 1, 1, -1), D = c(-1, -1, 1, 1, 1), E = c(1, 1, -1, -1, -1))
 #' counting(df1)
 #' @export
 counting <- function(df1) {
