@@ -1,35 +1,44 @@
 
 #' Create a Count Table with Percentages, Mean, and SD
 #'
-#' This function takes a data frame, transforms it by computing counts, percentages,
-#' mean, and standard deviation for specified columns. It helps in summarizing
-#' the data to understand the distribution and variation.
+#' This function takes a data frame and computes the count and percentage of
+#' each value across specified columns. It also calculates the weighted mean and
+#' standard deviation for each variable. The output is a summary data frame
+#' useful for analyzing distributions of ordinal or Likert-type scales.
 #'
-#' @param df1 A data frame containing the data to be processed. The data frame
-#' should have at least 5 columns to select from.
-#' @return A data frame with computed statistics, including counts, percentages,
-#' mean, and standard deviation.
+#' @param df1 A data frame containing the variables to summarize.
+#' @param cols A character vector with the names of the columns to include in the analysis.
+#' @return A data frame in wide format containing:
+#' \itemize{
+#'   \item Counts of each value per variable
+#'   \item Percentages of each value per variable
+#'   \item Weighted mean
+#'   \item Weighted standard deviation
+#' }
 #' @examples
-#' df1 <- data.frame(A = c(-1, 2, 2, 3, -1), B = c(-1, 2, 3, -1, 2),
-#' C = c(1, 2, -2, 3, -1), D = c(3, 2, 1, -1, -2), E = c(2, 3, 1, -1, -3))
-#' result <- counting(df1)
-#' print(result)
+#' df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
+#'                   C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+#' counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
 #' @export
-counting <- function(df1) {
-  df1 [,-1] %>%
-    #select(2:6) %>%
-    pivot_longer(everything()) %>%
-    group_by(name, value) %>%
-    dplyr::summarise(Count = n()) %>%
-    group_by(name) %>%
-    mutate(`%` = 100 * (Count / sum(Count)),
-           Mean = weighted.mean(value, Count),
-           SD = sqrt(Hmisc::wtd.var(value, Count)),
-           Total = sum(Count)) %>%
-    ungroup() %>%
-    pivot_wider(names_from = 'value',
-                names_sep = ' ',
-                values_from = c('Count', `%`),
-                names_vary = 'slowest')
+counting <- function(df1, cols) {
+  df1 %>%
+    dplyr::select(all_of(cols)) %>%
+    tidyr::pivot_longer(everything()) %>%
+    dplyr::group_by(name, value) %>%
+    dplyr::summarise(Count = n(), .groups = 'drop_last') %>%
+    dplyr::group_by(name) %>%
+    dplyr::mutate(
+      Percentage = round(100 * (Count / sum(Count)), 2),
+      Mean = round(weighted.mean(value, Count), 2),
+      SD = round(sqrt(Hmisc::wtd.var(value, Count)), 2),
+      Total = sum(Count)
+    ) %>%
+    dplyr::ungroup() %>%
+    tidyr::pivot_wider(
+      names_from = 'value',
+      names_sep = ' ',
+      values_from = c('Count', 'Percentage'),
+      names_vary = 'slowest'
+    )
 }
 

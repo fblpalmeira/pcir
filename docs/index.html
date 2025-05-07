@@ -108,25 +108,31 @@
 <p>Example dataset:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>  A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span>  B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
-<span>  D <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  E <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
+<span>  A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>  B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>  D <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  E <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Count responses:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/counting.html">counting</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span>
-<span><span class="va">df_count</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/counting.html">counting</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span>
+<span><span class="va">df2</span></span></code></pre></div>
 <p>Calculate PCI:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df_pci</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pci.html">pci</a></span><span class="op">(</span><span class="va">df_count</span><span class="op">)</span></span>
-<span><span class="va">df_pci</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pci.html">pci</a></span><span class="op">(</span><span class="va">df2</span>, negative_val <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, positive_val <span class="op">=</span> <span class="fl">1</span>, scale_type <span class="op">=</span> <span class="st">'bipolar'</span><span class="op">)</span></span>
+<span><span class="va">df3</span></span></code></pre></div>
 <p>Visualize with a bubble plot:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># The bubble function creates a bubble plot to visualize the PCI results</span></span>
-<span><span class="va">bubble_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bubble.html">bubble</a></span><span class="op">(</span><span class="va">df_pci</span><span class="op">)</span></span>
-<span><span class="va">bubble_plot</span> <span class="co"># Display the bubble plot</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># The bubble function creates a bubble plot to visualize the PCI results.</span></span>
+<span><span class="co"># You can customize the colors and title as per your preferences.</span></span>
+<span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bubble.html">bubble</a></span><span class="op">(</span><span class="va">df3</span>,</span>
+<span>               scale_type <span class="op">=</span> <span class="st">'bipolar'</span>,</span>
+<span>               ylim_range <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>               bubble_color <span class="op">=</span> <span class="st">'lightblue'</span>,</span>
+<span>               bubble_stroke <span class="op">=</span> <span class="st">'darkblue'</span>,</span>
+<span>               title <span class="op">=</span> <span class="st">'Custom Bubble Colors'</span><span class="op">)</span></span>
+<span><span class="va">plot</span></span></code></pre></div>
 <p><img src="reference/figures/output_pci.png"></p>
 <p><strong>Figure 3.</strong> Bubble chart illustrating the Potential for Conflict Indices.</p>
 </div>
@@ -169,12 +175,6 @@
 </h2>
 <p>If you encounter any bugs or issues, please report them on the <a href="https://github.com/fblpalmeira/pcir/issues" class="external-link">GitHub Issues</a> page.</p>
 <p>Note: To report a bug, you need a GitHub account, which you can join for free.</p>
-<p>How to Create an Issue:</p>
-<ul>
-<li><p>To create an issue, go to the Issues tab of your GitHub repository, which will be visible just below the repository name, next to Pull Requests.</p></li>
-<li><p>Click on the ‘New Issue’ button and fill in the details about the bug or problem encountered.</p></li>
-<li><p>Users can do this at any time, and you will receive a notification when a new issue is created.</p></li>
-</ul>
 </div>
 <div class="section level2">
 <h2 id="discussions">Discussions<a class="anchor" aria-label="anchor" href="#discussions"></a>
