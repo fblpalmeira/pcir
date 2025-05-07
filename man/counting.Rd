@@ -4,32 +4,41 @@
 \alias{counting}
 \title{Create a Count Table with Percentages, Mean, and SD}
 \usage{
-counting(df1)
+counting(df1, cols)
 
-counting(df1)
+counting(df1, cols)
 }
 \arguments{
 \item{df1}{A data frame containing the data to be processed.}
+
+\item{cols}{A vector of column names to be included in the calculation.}
 }
 \value{
-A data frame with computed statistics, including counts, percentages,
-mean, and standard deviation.
+A data frame in wide format containing:
+\itemize{
+\item Counts of each value per variable
+\item Percentages of each value per variable
+\item Weighted mean
+\item Weighted standard deviation
+}
 
-A data frame with computed statistics.
+A data frame with computed statistics, including counts, percentages, means, and standard deviations.
+df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1),
+C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
 }
 \description{
-This function takes a data frame, transforms it by computing counts, percentages,
-mean, and standard deviation for specified columns. It helps in summarizing
-the data to understand the distribution and variation.
+This function takes a data frame and computes the count and percentage of
+each value across specified columns. It also calculates the weighted mean and
+standard deviation for each variable. The output is a summary data frame
+useful for analyzing distributions of ordinal or Likert-type scales.
 
 Create a count table with percentages, mean, and standard deviation.
+This function takes a data frame, computes summary statistics like counts, percentages,
+means, and standard deviations for each unique value in the selected columns.
 }
 \examples{
-df1 <- data.frame(A = c(-1, 2, 2, 3, -1), B = c(-1, 2, 3, -1, 2),
-C = c(1, 2, -2, 3, -1), D = c(3, 2, 1, -1, -2), E = c(2, 3, 1, -1, -3))
-result <- counting(df1)
-print(result)
-df1 <- data.frame(A = c(-1, -1, -1, -1, -1), B = c(-1, 1, 1, -1, 1)),
-                  C = c(1, 1, 1, 1, -1), D = c(-1, -1, 1, 1, 1), E = c(1, 1, -1, -1, -1))
-counting(df1)
+df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
+                  C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
 }
