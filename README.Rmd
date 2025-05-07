@@ -102,7 +102,7 @@ df1 <- data.frame(
 Count responses:
 
 ```r
-df2 <- counting(df1, cols = names(df1)[2:6])
+df2 <- counting(df1)
 df2
 ```
 
