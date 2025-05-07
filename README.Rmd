@@ -91,34 +91,41 @@ Example dataset:
 
 ```r
 df1 <- data.frame(
-  A = c(-1, -1, -1, -1, -1),
-  B = c(-1, 1, 1, -1, 1),
-  C = c(1, 1, 1, 1, -1),
-  D = c(-1, -1, 1, 1, 1),
-  E = c(1, 1, -1, -1, -1)
+  A = c(-1, -1, -1, 0, -1),
+  B = c(-1, 1, 0, -1, 1),
+  C = c(1, 1, 1, 0, -1),
+  D = c(0, -1, 1, 1, 1),
+  E = c(1, 1, 0, -1, -1)
 )
 ```
 
 Count responses:
 
 ```r
-df_count <- counting(df1)
-df_count
+df2 <- counting(df1, cols = names(df1)[2:6])
+df2
 ```
 
 Calculate PCI:
 
 ```r
-df_pci <- pci(df_count)
-df_pci
+df3 <- pci(df2, negative_val = -1, positive_val = 1, scale_type = 'bipolar')
+df3
 ```
 
 Visualize with a bubble plot:
 
 ```r
-# The bubble function creates a bubble plot to visualize the PCI results
-bubble_plot <- bubble(df_pci)
-bubble_plot # Display the bubble plot
+# The bubble function creates a bubble plot to visualize the PCI results.
+# You can customize the colors and title as per your preferences.
+plot <- bubble(df3,
+               scale_type = 'bipolar',
+               ylim_range = 1,
+               bubble_color = 'lightblue',
+               bubble_stroke = 'darkblue',
+               title = 'Custom Bubble Colors')
+plot
+
 ```
 
 <img src='man/figures/output_pci.png'>
@@ -172,17 +179,6 @@ This package is licensed under the [MIT License](https://github.com/fblpalmeira/
 If you encounter any bugs or issues, please report them on the [GitHub Issues](https://github.com/fblpalmeira/pcir/issues) page.
 
 Note: To report a bug, you need a GitHub account, which you can join for free.
-
-How to Create an Issue:
-
-- To create an issue, go to the Issues tab of your GitHub repository, which will be
-visible just below the repository name, next to Pull Requests.
-
-- Click on the 'New Issue' button and fill in the details about the bug or problem
-encountered.
-
-- Users can do this at any time, and you will receive a notification when a new
-issue is created.
 
 ## Discussions
 
