@@ -1,8 +1,8 @@
 pandoc: '3.2'
-pkgdown: 2.1.1
+pkgdown: 2.1.2
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-05-07T20:13Z
+last_built: 2025-05-21T18:58Z
 urls:
   reference: https://fblpalmeira.github.io/pcir/reference
   article: https://fblpalmeira.github.io/pcir/articles

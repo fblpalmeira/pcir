@@ -24,25 +24,23 @@ counting_code <- "
 #' Create a Count Table with Percentages, Mean, and SD
 #'
 #' This function takes a data frame and computes the count and percentage of
-#' each value across specified columns. It also calculates the weighted mean and
-#' standard deviation for each variable. The output is a summary data frame
-#' useful for analyzing distributions of ordinal or Likert-type scales.
+#' each unique value across specified columns. It also calculates the weighted mean
+#' and weighted standard deviation for each variable.
+#'
+#' The output is useful for summarizing responses from ordinal or Likert-type items,
+#' showing how values are distributed and summarized across variables.
 #'
 #' @param df1 A data frame containing the variables to summarize.
 #' @param cols A character vector with the names of the columns to include in the analysis.
-#' @return A data frame in wide format containing:
+#'
+#' @return A data frame in wide format including:
 #' \\itemize{
-#'   \\item Counts of each value per variable
-#'   \\item Percentages of each value per variable
-#'   \\item Weighted mean
-#'   \\item Weighted standard deviation
+#'   \\item Counts and percentages for each unique value.
+#'   \\item Weighted mean and standard deviation.
 #' }
-#' @examples
-#' df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
-#'                   C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
-#' counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
+#'
 #' @export
-counting <- function(df1, cols) {
+counting <- function(df1, cols = names(df1)) {
   df1 %>%
     dplyr::select(all_of(cols)) %>%
     tidyr::pivot_longer(everything()) %>%
@@ -68,157 +66,279 @@ counting <- function(df1, cols) {
 writeLines(counting_code, file.path(r_directory, "counting.R"))
 
 pci_code <- "
-#' Calculate the Potential for Conflict Index (PCI)
+#' Calculate the Potential for Conflict Index (PCI2)
 #'
-#' This function computes the Potential for Conflict Index (PCI) for each item
-#' in a summarized data frame produced by the 'counting' function. The PCI is
-#' a measure of consensus versus conflict in responses, based on the distribution
-#' of responses across the two poles of a scale (e.g., -1 and 1).
+#' This function computes the PCI2 (a generalized Potential for Conflict Index) for each item in a
+#' summarized data frame (typically from the `counting()` function), or for a single named numeric vector
+#' of counts. It works with three types of scales: `bipolar_with_neutral`, `bipolar_without_neutral`, and `unipolar`.
 #'
-#' @param df2 A data frame produced by the 'counting' function, containing
-#' columns like 'Count -1', 'Count 0', 'Count 1', and 'Total'.
-#' @param negative_val The numeric value representing the negative pole of the scale.
-#' Default is -1.
-#' @param positive_val The numeric value representing the positive pole of the scale.
-#' Default is 1.
-#' @param scale_type Type of scale used: 'bipolar' (default) or 'unipolar'.
-#' Currently included for future expansion; the function currently assumes a bipolar structure.
+#' @param data A data frame with columns named like 'Count X' (where X is a scale value),
+#' or a named numeric vector of counts.
+#' @param scale_type Type of scale: `'bipolar_with_neutral'`, `'bipolar_without_neutral'`, or `'unipolar'`.
+#' @param min_scale_value The minimum value of the scale (e.g., -2 or 1).
+#' @param max_scale_value The maximum value of the scale (e.g., 2 or 9).
+#' @param exponent A number to raise distances to. Use `1` for linear distance,
+#' `2` for squared distance, etc. Default is `1`.
 #'
-#' @return A data frame including the original columns plus the computed 'PCI' value
-#' for each row/item. Numeric columns are rounded to two decimal places.
+#' @return If `data` is a data frame, it returns the same data frame with an added `PCI` column.
+#' If `data` is a named numeric vector, it returns the PCI value directly.
 #'
 #' @details
-#' The PCI is calculated using the formula:
-#' PCI = [1 - (na / xt - nu / xt)] * xt / z
-#' where 'na' and 'nu' are the counts of agreement and disagreement respectively,
-#' 'xt' is the total of positive and negative responses, and 'z' is the total number
-#' of responses.
+#' For unipolar scales, PCI2 is based on all pairwise distances between categories.
 #'
-#' The resulting PCI ranges from 0 (no conflict) to 1 (maximum conflict).
+#' For bipolar scales, PCI2 considers distances between opposing poles, ignoring neutral (0) in
+#' the case of `bipolar_without_neutral`. In `bipolar_with_neutral`, 0 is included in the scale
+#' but not in the calculation of conflict.
+#'
+#' The maximum possible polarization (used for normalization) assumes a perfectly split distribution.
 #'
 #' @examples
 #' df1 <- data.frame(
-#'   A = c(-1, 1, 1, 0, -1),
+#'   A = c(-1, -1, -1, 0, -1),
 #'   B = c(-1, 1, 0, -1, 1),
-#'   C = c(1, 1, -1, 0, -1),
-#'   D = c(0, 1, 1, -1, -1),
+#'   C = c(0, 0, 1, 0, -1),
+#'   D = c(0, -1, 1, 1, 1),
 #'   E = c(1, 1, 0, -1, -1)
 #' )
 #' df2 <- counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
-#' result <- pci(df2)
-#' print(result)
+#' pci(df2, scale_type = 'bipolar_with_neutral', min_scale_value = -1, max_scale_value = 1)
 #'
-#' @importFrom dplyr mutate across
+#' @importFrom dplyr mutate select all_of
+#' @importFrom purrr pmap_dbl
 #' @export
-pci <- function(df2, negative_val = -1, positive_val = 1, scale_type = c('bipolar', 'unipolar')) {
+pci <- function(data,
+                scale_type = c('bipolar_with_neutral', 'bipolar_without_neutral', 'unipolar'),
+                min_scale_value,
+                max_scale_value,
+                exponent = 1) {
+
   scale_type <- match.arg(scale_type)
 
-  neg_col <- paste0('Count ', negative_val)
-  pos_col <- paste0('Count ', positive_val)
-
-  if (!(neg_col %in% names(df2)) || !(pos_col %in% names(df2))) {
-    stop('One or both specified Count columns not found in the data.')
+  # Internal function for unipolar scale
+  calc_unipolar <- function(counts_vector) {
+    counts_vector[is.na(counts_vector)] <- 0
+    total_actual_distance <- 0
+    for (i in min_scale_value:(max_scale_value - 1)) {
+      for (j in (i + 1):max_scale_value) {
+        count_i <- counts_vector[paste0('Count ', i)]
+        count_j <- counts_vector[paste0('Count ', j)]
+        distance <- (j - i)^exponent
+        total_actual_distance <- total_actual_distance + 2 * count_i * count_j * distance
+      }
+    }
+    total_responses <- sum(counts_vector)
+    if (total_responses == 0) return(NA_real_)
+    max_distance <- (max_scale_value - min_scale_value)^exponent
+    if (total_responses %% 2 == 0) {
+      max_total_distance <- max_distance * total_responses^2 / 2
+    } else {
+      max_total_distance <- max_distance * (total_responses + 1) * (total_responses - 1) / 2
+    }
+    pci2 <- total_actual_distance / max_total_distance
+    return(pci2)
   }
 
-  df2 %>%
-    mutate(
-      nu = .data[[neg_col]],
-      na = .data[[pos_col]],
-      xt = nu + na,
-      z = Total,
-      PCI = (1 - (na / xt - nu / xt)) * xt / z
-    ) %>%
-    mutate(across(where(is.numeric), function(x) round(x, 2)))
+  # Internal function for bipolar scale with neutral (e.g., -2 to 2)
+  calc_bipolar_with_neutral <- function(counts_vector) {
+    counts_vector[is.na(counts_vector)] <- 0
+    scale_values <- as.numeric(gsub('Count ', '', names(counts_vector)))
+    names(counts_vector) <- as.character(scale_values)
+    scale_values <- sort(scale_values)
+    total_actual_distance <- 0
+    total_responses <- sum(counts_vector)
+    if (total_responses == 0) return(NA_real_)
+    negative_values <- scale_values[scale_values < 0]
+    positive_values <- scale_values[scale_values > 0]
+    for (i in negative_values) {
+      for (j in positive_values) {
+        count_i <- counts_vector[as.character(i)]
+        count_j <- counts_vector[as.character(j)]
+        distance <- (abs(i) + abs(j) - 1)^exponent
+        total_actual_distance <- total_actual_distance + 2 * count_i * count_j * distance
+      }
+    }
+    max_distance <- (abs(min_scale_value) + abs(max_scale_value) - 1)^exponent
+    if (total_responses %% 2 == 0) {
+      max_total_distance <- max_distance * total_responses^2 / 2
+    } else {
+      max_total_distance <- max_distance * (total_responses + 1) * (total_responses - 1) / 2
+    }
+    pci2 <- total_actual_distance / max_total_distance
+    return(pci2)
+  }
+
+  # Internal function for bipolar scale without neutral (e.g., -2, -1, 1, 2)
+  calc_bipolar_without_neutral <- function(counts_vector) {
+    if ('Count 0' %in% names(counts_vector)) {
+      stop('Scale must not include value zero (neutral) for bipolar_without_neutral.')
+    }
+    counts_vector[is.na(counts_vector)] <- 0
+    scale_values <- as.numeric(gsub('Count ', '', names(counts_vector)))
+    expected_values <- min_scale_value:max_scale_value
+    expected_values <- expected_values[expected_values != 0]
+    for (val in expected_values) {
+      label <- paste0('Count ', val)
+      if (!label %in% names(counts_vector)) {
+        counts_vector[label] <- 0
+      }
+    }
+    counts_vector <- counts_vector[paste0('Count ', expected_values)]
+    negatives <- expected_values[expected_values < 0]
+    positives <- expected_values[expected_values > 0]
+    total_actual_distance <- 0
+    for (i in negatives) {
+      for (j in positives) {
+        count_i <- counts_vector[[paste0('Count ', i)]]
+        count_j <- counts_vector[[paste0('Count ', j)]]
+        distance <- (abs(i) + abs(j) - 1)^exponent
+        total_actual_distance <- total_actual_distance + 2 * count_i * count_j * distance
+      }
+    }
+    total_responses <- sum(counts_vector)
+    if (total_responses == 0) return(NA_real_)
+    max_distance <- (abs(min_scale_value) + abs(max_scale_value) - 1)^exponent
+    if (total_responses %% 2 == 0) {
+      max_total_distance <- max_distance * total_responses^2 / 2
+    } else {
+      max_total_distance <- max_distance * (total_responses + 1) * (total_responses - 1) / 2
+    }
+    pci2 <- total_actual_distance / max_total_distance
+    return(pci2)
+  }
+
+  # If input is a data frame
+  if (is.data.frame(data)) {
+    count_cols <- paste0('Count ', min_scale_value:max_scale_value)
+    if (!all(count_cols %in% names(data))) {
+      stop(paste0('The data.frame must contain columns from ', paste(count_cols, collapse = ', ')))
+    }
+    data <- dplyr::mutate(
+      data,
+      PCI = purrr::pmap_dbl(
+        .l = dplyr::select(data, dplyr::all_of(count_cols)),
+        .f = function(...) {
+          counts <- c(...)
+          names(counts) <- count_cols
+          switch(scale_type,
+                 'unipolar' = calc_unipolar(counts),
+                 'bipolar_with_neutral' = calc_bipolar_with_neutral(counts),
+                 'bipolar_without_neutral' = calc_bipolar_without_neutral(counts))
+        }
+      )
+    )
+    return(data)
+  }
+
+  # If input is a named numeric vector
+  else if (is.numeric(data) && !is.null(names(data))) {
+    switch(scale_type,
+           'unipolar' = calc_unipolar(data),
+           'bipolar_with_neutral' = calc_bipolar_with_neutral(data),
+           'bipolar_without_neutral' = calc_bipolar_without_neutral(data))
+  }
+
+  else {
+    stop(paste0('Input must be a named numeric vector or a data.frame with the following columns: ', paste(count_cols, collapse = ', ')))
+
+  }
 }
 "
 
 writeLines(pci_code, file.path(r_directory, "pci.R"))
 
-# Define and save the bubble function
+# Define and save the updated bubble function
 bubble_code <- "
 #' Create a Bubble Plot for PCI Visualization
 #'
-#' This function generates a bubble plot to visualize the results of the PCI
-#' calculation. It shows the mean action acceptability on the y-axis and the PCI
-#' value as the size of the bubbles.
+#' This function generates a bubble plot to visualize the results of the PCI calculation.
+#' It shows the mean action acceptability on the y-axis and the PCI value as the size of the bubbles.
 #'
-#' @param df3 A data frame generated by the 'pci' function, containing the PCI
-#' values and other statistics.
-#' @param scale_type The scale type used: 'bipolar' or 'unipolar'. Default is 'bipolar'.
-#' @param ylim_range For 'bipolar' scale, the range of the y-axis. Must be an integer between 1 and 4.
-#' @param unipolar_ylim A numeric vector of length 2 specifying the y-axis limits for 'unipolar' scale.
-#' @param xlab The label for the x-axis. Default is an empty string.
-#' @param ylab The label for the y-axis. Default is 'Action acceptability'.
-#' @param title Optional title for the plot. Default is NULL.
-#' @param bubble_color The fill color of the bubbles. Default is 'gray80'.
-#' @param bubble_stroke The border color of the bubbles. Default is 'black'.
+#' @param data A data frame containing at least the columns 'name', 'Mean', and 'PCI'.
+#' @param scale_type Type of scale used: 'bipolar_with_neutral', 'bipolar_without_neutral', or 'unipolar'.
+#' @param ylim_range Integer range for y-axis in bipolar_with_neutral. Default is 4.
+#' @param unipolar_ylim Numeric vector of length 2 specifying the y-axis limits for unipolar scale.
+#' @param xlab Label for the x-axis. Default is empty.
+#' @param ylab Label for the y-axis. Default is 'Action acceptability'.
+#' @param title Optional title for the plot.
+#' @param bubble_color Fill color of the bubbles. Default is 'gray80'.
+#' @param bubble_stroke Border color of the bubbles. Default is 'black'.
+#' @param x_line Value where to draw a horizontal reference line. Defaults to 0.
 #'
 #' @return A ggplot2 object representing the bubble plot.
 #'
 #' @details
-#' The bubble plot displays the 'Mean' value on the y-axis and the PCI value as the size of the bubbles.
-#' It helps to visualize the relationship between action acceptability (mean score) and the potential
-#' for conflict index (PCI) for each category in the dataset.
+#' This plot is useful for visualizing how polarized (PCI) and how acceptable (Mean) each action/item is.
 #'
 #' @examples
 #' data <- data.frame(
-#'   Category = rep(c('A', 'B', 'C'), each = 3),
-#'   Value = c(-1, 0, 1, -1, 0, 1, -1, 0, 1)
+#'   name = c('A', 'B', 'C'),
+#'   Mean = c(0.5, -1, 1.2),
+#'   PCI = c(0.2, 0.5, 0.8)
 #' )
-#' df2 <- counting(data)
-#' df3 <- pci(df2)
-#' bubble(df3)
+#' bubble(data, scale_type = 'bipolar_with_neutral')
 #'
 #' @import ggplot2
 #' @export
-bubble <- function(df3,
-                   scale_type = c('bipolar', 'unipolar'),
+bubble <- function(data,
+                   scale_type = c('bipolar_with_neutral', 'bipolar_without_neutral', 'unipolar'),
                    ylim_range = 4,
                    unipolar_ylim = c(1, 9),
                    xlab = '',
                    ylab = 'Action acceptability',
                    title = NULL,
                    bubble_color = 'gray80',
-                   bubble_stroke = 'black') {
+                   bubble_stroke = 'black',
+                   x_line = NULL) {
+
   scale_type <- match.arg(scale_type)
 
-  if (scale_type == 'unipolar') {
-    if (!is.numeric(unipolar_ylim) || length(unipolar_ylim) != 2) {
-      stop('For unipolar scale, unipolar_ylim must be a numeric vector of length 2.')
-    }
-    y_limits <- unipolar_ylim
-  } else {
-    if (!ylim_range %in% 1:4) {
-      stop('For bipolar scale, ylim_range must be 1, 2, 3, or 4.')
-    }
-    y_limits <- c(-ylim_range, ylim_range)
+  # Define y-axis and reference line based on the scale type
+  if (scale_type == 'bipolar_with_neutral') {
+    y_limits <- c(-ylim_range / 2, ylim_range / 2)
+    if (is.null(x_line)) x_line <- 0
+    scale_y <- scale_y_continuous(limits = y_limits)
+
+  } else if (scale_type == 'bipolar_without_neutral') {
+    if (is.null(x_line)) x_line <- 0
+    custom_y_labels <- function(x) ifelse(x == 0, \"\", x)
+    scale_y <- scale_y_continuous(
+      limits = c(-2, 2),
+      breaks = c(-2, -1, 0, 1, 2),
+      labels = custom_y_labels
+    )
+
+  } else if (scale_type == 'unipolar') {
+    if (is.null(x_line)) x_line <- 0
+    scale_y <- expand_limits(y = x_line)
   }
 
-  p <- ggplot(df3, aes(x = name, y = Mean, size = PCI)) +
-    geom_hline(yintercept = 0, colour = 'black') +
+  # Create the plot
+  p <- ggplot(data, aes(x = name, y = Mean, size = PCI)) +
+    geom_hline(yintercept = x_line, colour = 'black') +
     geom_point(shape = 21, fill = bubble_color, color = bubble_stroke, show.legend = TRUE) +
-    geom_text(aes(label = round(PCI, 2)),
-              nudge_y = 0.35, nudge_x = 0.1, size = 5) +
-    ylab(ylab) + xlab(xlab) +
-    ylim(y_limits) +
+    geom_text(aes(label = round(PCI, 2)), nudge_y = 0.35, nudge_x = 0.1, size = 5) +
+    xlab(xlab) + ylab(ylab) +
     scale_size_area(max_size = 14) +
+    scale_y +
     theme_minimal() +
-    theme(panel.grid.major.y = element_blank(),
-          panel.grid.minor.y = element_blank(),
-          panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank(),
-          axis.title.x = element_text(size = 16),
-          axis.title.y = element_text(size = 16),
-          axis.text.x = element_text(size = 14, angle = 45, vjust = 1, hjust = 1),
-          axis.text.y = element_text(size = 14),
-          axis.line.x = element_line(colour = 'white'),
-          axis.line.y = element_line(colour = 'black'),
-          axis.ticks = element_line(colour = 'black'),
-          legend.key.size = unit(1, 'cm'),
-          legend.key.height = unit(1, 'cm'),
-          legend.key.width = unit(1, 'cm'),
-          legend.title = element_text(size = 16),
-          legend.text = element_text(size = 14))
+    theme(
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.title.x = element_text(size = 16),
+      axis.title.y = element_text(size = 16),
+      axis.text.x = element_text(size = 14, angle = 45, vjust = 1, hjust = 1),
+      axis.text.y = element_text(size = 14),
+      axis.line.x = element_line(colour = 'white'),
+      axis.line.y = element_line(colour = 'black'),
+      axis.ticks = element_line(colour = 'black'),
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+      legend.title = element_text(size = 16),
+      legend.text = element_text(size = 14)
+    )
 
   if (!is.null(title)) {
     p <- p + ggtitle(title) +
@@ -228,7 +348,9 @@ bubble <- function(df3,
   return(p)
 }
 "
+
 writeLines(bubble_code, file.path(r_directory, "bubble.R"))
+
 
 # Content for the pcir.package.R file
 pcir_package_code <- "
@@ -240,7 +362,7 @@ pcir_package_code <- "
 #'
 #' @section Functions:
 #' - `counting()`: Summarize data by calculating counts, percentages, means, and standard deviations.
-#' - `pci()`: Compute the Potential for Conflict Index (PCI) from summary data.
+#' - `pci()`: Compute the Potential for Conflict Index (PCI2) from summary data.
 #' - `bubble()`: Create a bubble plot to visualize PCI results.
 #'
 #' @name pcir-package
@@ -266,10 +388,25 @@ NULL
 #'
 #' @param df1 A data frame containing the data to be processed.
 #' @param cols A vector of column names to be included in the calculation.
-#' @return A data frame with computed statistics, including counts, percentages, means, and standard deviations.
-#' df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1),
-#'                   C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+#'
+#' @return A data frame in wide format including:
+#' \\itemize{
+#'   \\item Count and percentage for each value per variable
+#'   \\item Weighted mean
+#'   \\item Weighted standard deviation (SD)
+#'   \\item Total number of observations per variable
+#' }
+#'
+#' @examples
+#' df1 <- data.frame(
+#'   A = c(-1, -1, -1, 0, -1),
+#'   B = c(-1, 1, 0, -1, 1),
+#'   C = c(0, 0, 1, 0, -1),
+#'   D = c(0, -1, 1, 1, 1),
+#'   E = c(1, 1, 0, -1, -1)
+#' )
 #' counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
+#'
 #' @export
 counting <- function(df1, cols) {
   df1 %>%
@@ -296,115 +433,251 @@ counting <- function(df1, cols) {
 #' PCI Function
 #'
 #' @description Calculate the Potential for Conflict Index (PCI).
-#' This function computes the PCI by comparing the counts of positive and negative
-#' values within a dataset. The PCI value is normalized by the total responses.
+#' This function computes the PCI2 (a generalized Potential for Conflict Index) for each item in a
+#' summarized data frame (typically from the `counting()` function), or for a single named numeric vector
+#' of counts. It works with three types of scales: `bipolar_with_neutral`, `bipolar_without_neutral`, and `unipolar`.
 #'
-#' @param df2 A data frame generated by the `counting` function, containing the summarized data.
-#' @param negative_val The value representing negative responses. Default is '-1'.
-#' @param positive_val The value representing positive responses. Default is '1'.
-#' @param scale_type The scale type used: 'bipolar' or 'unipolar'. Default is 'bipolar'.
-#' @return A data frame with the calculated PCI values for each group.
+#' @param data A data frame with columns named like 'Count X' (where X is a scale value),
+#' or a named numeric vector of counts.
+#' @param scale_type Type of scale: `'bipolar_with_neutral'`, `'bipolar_without_neutral'`, or `'unipolar'`.
+#' @param min_scale_value The minimum value of the scale (e.g., -2 or 1).
+#' @param max_scale_value The maximum value of the scale (e.g., 2 or 9).
+#' @param exponent A number to raise distances to. Use `1` for linear distance,
+#' `2` for squared distance, etc. Default is `1`.
+#'
+#' @return If `data` is a data frame, it returns the same data frame with an added `PCI` column.
+#' If `data` is a named numeric vector, it returns the PCI value directly.
+#'
+#' @details
+#' For unipolar scales, PCI2 is based on all pairwise distances between categories.
+#'
+#' For bipolar scales, PCI2 considers distances between opposing poles, ignoring neutral (0) in
+#' the case of `bipolar_without_neutral`. In `bipolar_with_neutral`, 0 is included in the scale
+#' but not in the calculation of conflict.
+#'
+#' The maximum possible polarization (used for normalization) assumes a perfectly split distribution.
+#'
 #' @examples
-#' df2 <- counting(df1)
-#' pci(df2)
+#' df1 <- data.frame(
+#'   A = c(-1, -1, -1, 0, -1),
+#'   B = c(-1, 1, 0, -1, 1),
+#'   C = c(0, 0, 1, 0, -1),
+#'   D = c(0, -1, 1, 1, 1),
+#'   E = c(1, 1, 0, -1, -1)
+#' )
+#' df2 <- counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
+#' pci(df2, scale_type = 'bipolar_with_neutral', min_scale_value = -1, max_scale_value = 1)
+#'
+#' @importFrom dplyr mutate select all_of
+#' @importFrom purrr pmap_dbl
 #' @export
-pci <- function(df2, negative_val = -1, positive_val = 1, scale_type = c('bipolar', 'unipolar')) {
+pci <- function(data,
+                scale_type = c('bipolar_with_neutral', 'bipolar_without_neutral', 'unipolar'),
+                min_scale_value,
+                max_scale_value,
+                exponent = 1) {
+
   scale_type <- match.arg(scale_type)
 
-  neg_col <- paste0('Count ', negative_val)
-  pos_col <- paste0('Count ', positive_val)
-
-  if (!(neg_col %in% names(df2)) || !(pos_col %in% names(df2))) {
-    stop('One or both specified Count columns not found in the data.')
+  # Internal function for unipolar scale
+  calc_unipolar <- function(counts_vector) {
+    counts_vector[is.na(counts_vector)] <- 0
+    total_actual_distance <- 0
+    for (i in min_scale_value:(max_scale_value - 1)) {
+      for (j in (i + 1):max_scale_value) {
+        count_i <- counts_vector[paste0('Count ', i)]
+        count_j <- counts_vector[paste0('Count ', j)]
+        distance <- (j - i)^exponent
+        total_actual_distance <- total_actual_distance + 2 * count_i * count_j * distance
+      }
+    }
+    total_responses <- sum(counts_vector)
+    if (total_responses == 0) return(NA_real_)
+    max_distance <- (max_scale_value - min_scale_value)^exponent
+    if (total_responses %% 2 == 0) {
+      max_total_distance <- max_distance * total_responses^2 / 2
+    } else {
+      max_total_distance <- max_distance * (total_responses + 1) * (total_responses - 1) / 2
+    }
+    pci2 <- total_actual_distance / max_total_distance
+    return(pci2)
   }
 
-  df2 %>%
-    mutate(
-      nu = .data[[neg_col]],
-      na = .data[[pos_col]],
-      xt = nu + na,
-      z = Total,
-      PCI = (1 - (na / xt - nu / xt)) * xt / z
-    ) %>%
-    mutate(across(where(is.numeric), function(x) round(x, 2)))
+  # Internal function for bipolar scale with neutral (e.g., -2 to 2)
+  calc_bipolar_with_neutral <- function(counts_vector) {
+    counts_vector[is.na(counts_vector)] <- 0
+    scale_values <- as.numeric(gsub('Count ', '', names(counts_vector)))
+    names(counts_vector) <- as.character(scale_values)
+    scale_values <- sort(scale_values)
+    total_actual_distance <- 0
+    total_responses <- sum(counts_vector)
+    if (total_responses == 0) return(NA_real_)
+    negative_values <- scale_values[scale_values < 0]
+    positive_values <- scale_values[scale_values > 0]
+    for (i in negative_values) {
+      for (j in positive_values) {
+        count_i <- counts_vector[as.character(i)]
+        count_j <- counts_vector[as.character(j)]
+        distance <- (abs(i) + abs(j) - 1)^exponent
+        total_actual_distance <- total_actual_distance + 2 * count_i * count_j * distance
+      }
+    }
+    max_distance <- (abs(min_scale_value) + abs(max_scale_value) - 1)^exponent
+    if (total_responses %% 2 == 0) {
+      max_total_distance <- max_distance * total_responses^2 / 2
+    } else {
+      max_total_distance <- max_distance * (total_responses + 1) * (total_responses - 1) / 2
+    }
+    pci2 <- total_actual_distance / max_total_distance
+    return(pci2)
+  }
+
+  # Internal function for bipolar scale without neutral (e.g., -2 to 2 but no 0)
+  calc_bipolar_without_neutral <- function(counts_vector) {
+    counts_vector[is.na(counts_vector)] <- 0
+    scale_values <- as.numeric(gsub('Count ', '', names(counts_vector)))
+    names(counts_vector) <- as.character(scale_values)
+    scale_values <- sort(scale_values)
+    total_actual_distance <- 0
+    total_responses <- sum(counts_vector)
+    if (total_responses == 0) return(NA_real_)
+    negative_values <- scale_values[scale_values < 0]
+    positive_values <- scale_values[scale_values > 0]
+    for (i in negative_values) {
+      for (j in positive_values) {
+        count_i <- counts_vector[as.character(i)]
+        count_j <- counts_vector[as.character(j)]
+        distance <- (abs(i) + abs(j))^exponent
+        total_actual_distance <- total_actual_distance + 2 * count_i * count_j * distance
+      }
+    }
+    max_distance <- (abs(min_scale_value) + abs(max_scale_value))^exponent
+    if (total_responses %% 2 == 0) {
+      max_total_distance <- max_distance * total_responses^2 / 2
+    } else {
+      max_total_distance <- max_distance * (total_responses + 1) * (total_responses - 1) / 2
+    }
+    pci2 <- total_actual_distance / max_total_distance
+    return(pci2)
+  }
+
+  # Compute PCI based on input type
+  if (is.data.frame(data)) {
+    # Extract relevant count columns per variable and calculate PCI row-wise
+    count_cols <- grep('^Count ', names(data), value = TRUE)
+    pci_values <- purrr::pmap_dbl(data[count_cols], function(...) {
+      counts_vector <- c(...)
+      names(counts_vector) <- count_cols
+      switch(
+        scale_type,
+        bipolar_with_neutral = calc_bipolar_with_neutral(counts_vector),
+        bipolar_without_neutral = calc_bipolar_without_neutral(counts_vector),
+        unipolar = calc_unipolar(counts_vector)
+      )
+    })
+    dplyr::mutate(data, PCI = pci_values)
+  } else if (is.numeric(data) && !is.null(names(data))) {
+    # Single vector of counts named as 'Count X'
+    switch(
+      scale_type,
+      bipolar_with_neutral = calc_bipolar_with_neutral(data),
+      bipolar_without_neutral = calc_bipolar_without_neutral(data),
+      unipolar = calc_unipolar(data)
+    )
+  } else {
+    stop(paste0('Input must be a named numeric vector or a data.frame with columns like: ', paste(count_cols, collapse = ', ')))
+
+  }
 }
 
 #' Bubble Plot Function
 #'
 #' @description Create a bubble plot to visualize PCI results.
-#' This function generates a bubble plot where each bubble represents a group.
-#' The size of the bubble corresponds to the PCI value, and the y-axis shows the mean
-#' action acceptability for each group.
+#' This function generates a bubble plot to visualize PCI results.
+#' Each bubble represents an item, with size proportional to total responses,
+#' x-axis representing weighted mean, and color representing the PCI value.
 #'
-#' @param df3 A data frame generated by the `pci` function, containing the PCI values and other statistics.
-#' @param scale_type The scale type used for the plot: 'bipolar' or 'unipolar'. Default is 'bipolar'.
-#' @param ylim_range For 'bipolar' scale, the range of the y-axis. Must be an integer between 1 and 4.
-#' @param unipolar_ylim A numeric vector of length 2 specifying the y-axis limits for 'unipolar' scale.
-#' @param xlab The label for the x-axis. Default is an empty string.
-#' @param ylab The label for the y-axis. Default is 'Action acceptability'.
-#' @param title Optional title for the plot. Default is NULL.
-#' @param bubble_color The fill color of the bubbles. Default is 'gray80'.
-#' @param bubble_stroke The border color of the bubbles. Default is 'black'.
-#' @return A ggplot2 object representing the bubble plot.
-#' @examples
-#' df3 <- pci(df2)
-#' bubble(df3)
+#' @param data A data frame containing at least the columns `name`, `Mean`, and `PCI`.
+#' @param scale_type The type of response scale. One of 'bipolar_with_neutral', 'bipolar_without_neutral', or 'unipolar'.
+#' @param ylim_range Numeric value to define y-axis range for bipolar scales.
+#' @param unipolar_ylim A numeric vector of length 2 specifying y-axis limits for unipolar scale.
+#' @param xlab Label for the x-axis.
+#' @param ylab Label for the y-axis.
+#' @param title Title for the plot.
+#' @param bubble_color Fill color for the bubbles.
+#' @param bubble_stroke Border color for the bubbles.
+#' @param x_line Position of the horizontal reference line.
+#'
+#' @return A ggplot2 object.
+#'
+#' @import ggplot2
 #' @export
-bubble <- function(df3,
-                   scale_type = c('bipolar', 'unipolar'),
+bubble <- function(data,
+                   scale_type = c('bipolar_with_neutral', 'bipolar_without_neutral', 'unipolar'),
                    ylim_range = 4,
                    unipolar_ylim = c(1, 9),
                    xlab = '',
                    ylab = 'Action acceptability',
                    title = NULL,
                    bubble_color = 'gray80',
-                   bubble_stroke = 'black') {
+                   bubble_stroke = 'black',
+                   x_line = NULL) {
+
   scale_type <- match.arg(scale_type)
 
-  if (scale_type == 'unipolar') {
-    if (!is.numeric(unipolar_ylim) || length(unipolar_ylim) != 2) {
-      stop('For unipolar scale, unipolar_ylim must be a numeric vector of length 2.')
-    }
-    y_limits <- unipolar_ylim
-  } else {
-    if (!ylim_range %in% 1:4) {
-      stop('For bipolar scale, ylim_range must be 1, 2, 3, or 4.')
-    }
-    y_limits <- c(-ylim_range, ylim_range)
+  # Define y-axis and reference line based on the scale type
+  if (scale_type == 'bipolar_with_neutral') {
+    y_limits <- c(-ylim_range / 2, ylim_range / 2)
+    if (is.null(x_line)) x_line <- 0
+    scale_y <- scale_y_continuous(limits = y_limits)
+
+  } else if (scale_type == 'bipolar_without_neutral') {
+    if (is.null(x_line)) x_line <- 0
+    custom_y_labels <- function(x) ifelse(x == 0, '', x)
+    scale_y <- scale_y_continuous(
+      limits = c(-2, 2),
+      breaks = c(-2, -1, 0, 1, 2),
+      labels = custom_y_labels
+    )
+
+  } else if (scale_type == 'unipolar') {
+    if (is.null(x_line)) x_line <- 0
+    scale_y <- expand_limits(y = x_line)
   }
 
-  p <- ggplot(df3, aes(x = name, y = Mean, size = PCI)) +
-    geom_hline(yintercept = 0, colour = 'black') +
+  # Create the plot
+  p <- ggplot(data, aes(x = name, y = Mean, size = PCI)) +
+    geom_hline(yintercept = x_line, colour = 'black') +
     geom_point(shape = 21, fill = bubble_color, color = bubble_stroke, show.legend = TRUE) +
-    geom_text(aes(label = round(PCI, 2)),
-              nudge_y = 0.35, nudge_x = 0.1, size = 5) +
-    ylab(ylab) + xlab(xlab) +
-    ylim(y_limits) +
+    geom_text(aes(label = round(PCI, 2)), nudge_y = 0.35, nudge_x = 0.1, size = 5) +
+    xlab(xlab) + ylab(ylab) +
     scale_size_area(max_size = 14) +
+    scale_y +
     theme_minimal() +
-    theme(panel.grid.major.y = element_blank(),
-          panel.grid.minor.y = element_blank(),
-          panel.grid.major.x = element_blank(),
-          panel.grid.minor.x = element_blank(),
-          axis.title.x = element_text(size = 16),
-          axis.title.y = element_text(size = 16),
-          axis.text.x = element_text(size = 14, angle = 45, vjust = 1, hjust = 1),
-          axis.text.y = element_text(size = 14),
-          axis.line.x = element_line(colour = 'white'),
-          axis.line.y = element_line(colour = 'black'),
-          axis.ticks = element_line(colour = 'black'),
-          legend.key.size = unit(1, 'cm'),
-          legend.key.height = unit(1, 'cm'),
-          legend.key.width = unit(1, 'cm'),
-          legend.title = element_text(size = 16),
-          legend.text = element_text(size = 14))
+    theme(
+      panel.grid.major.y = element_blank(),
+      panel.grid.minor.y = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      axis.title.x = element_text(size = 16),
+      axis.title.y = element_text(size = 16),
+      axis.text.x = element_text(size = 14, angle = 45, vjust = 1, hjust = 1),
+      axis.text.y = element_text(size = 14),
+      axis.line.x = element_line(colour = 'white'),
+      axis.line.y = element_line(colour = 'black'),
+      axis.ticks = element_line(colour = 'black'),
+      legend.key.size = unit(1, 'cm'),
+      legend.key.height = unit(1, 'cm'),
+      legend.key.width = unit(1, 'cm'),
+      legend.title = element_text(size = 16),
+      legend.text = element_text(size = 14)
+    )
 
   if (!is.null(title)) {
-    p <- p + ggtitle(title) +
-      theme(plot.title = element_text(size = 18, face = 'bold', hjust = 0.5))
+    p <- p + ggtitle(title)
   }
 
-  return(p)
+  print(p)
 }
 "
 
@@ -445,7 +718,7 @@ Config/Needs/website: true
 URL: https://github.com/fblpalmeira/pcir,
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
-Date: 2025-05-07
+Date: 2025-05-21
 "
 
 # Write the description to a DESCRIPTION file
@@ -620,7 +893,7 @@ Example dataset:
 df1 <- data.frame(
   A = c(-1, -1, -1, 0, -1),
   B = c(-1, 1, 0, -1, 1),
-  C = c(1, 1, 1, 0, -1),
+  C = c(0, 0, 1, 0, -1),
   D = c(0, -1, 1, 1, 1),
   E = c(1, 1, 0, -1, -1)
 )
@@ -629,15 +902,17 @@ df1 <- data.frame(
 Count responses:
 
 ```r
-df2 <- counting(df1)
-df2
+data <- counting(df1, cols = names(df1)[2:6])
+data
 ```
 
 Calculate PCI:
 
 ```r
-df3 <- pci(df2, negative_val = -1, positive_val = 1, scale_type = 'bipolar')
-df3
+data <- pci(data,
+                 scale_type = 'bipolar_with_neutral',
+                 min_scale_value = -1,
+                 max_scale_value = 1)
 ```
 
 Visualize with a bubble plot:
@@ -645,9 +920,9 @@ Visualize with a bubble plot:
 ```r
 # The bubble function creates a bubble plot to visualize the PCI results.
 # You can customize the colors and title as per your preferences.
-plot <- bubble(df3,
-               scale_type = 'bipolar',
-               ylim_range = 1,
+plot <- bubble(data = df3,
+               scale_type = 'bipolar_with_neutral',
+               ylim_range = 3,
                bubble_color = 'lightblue',
                bubble_stroke = 'darkblue',
                title = 'Custom Bubble Colors')
@@ -761,7 +1036,7 @@ writeLines(config_content, file.path(local_dir, "_pkgdown.yml"))
 # Build the site again to apply the config (if you added it)
 pkgdown::build_site()
 pkgbuild::check_build_tools(debug = TRUE)
-Sys.setenv(PATH = paste(Sys.getenv("PATH"), "C:/rtools45/usr/bin", sep=";"))
+Sys.setenv(PATH = paste(Sys.getenv("PATH"), "D:R/rtools45/usr/bin", sep=";"))
 #install.packages("devtools")
 devtools::find_rtools()  # Check if Rtools is correctly detected
 devtools::build()

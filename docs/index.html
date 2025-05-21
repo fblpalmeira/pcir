@@ -110,25 +110,27 @@
 <code class="sourceCode R"><span><span class="va">df1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>  B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
+<span>  C <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span>,</span>
 <span>  D <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>  E <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="op">-</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Count responses:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/counting.html">counting</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span></span>
-<span><span class="va">df2</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/counting.html">counting</a></span><span class="op">(</span><span class="va">df1</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df1</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">data</span></span></code></pre></div>
 <p>Calculate PCI:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">df3</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pci.html">pci</a></span><span class="op">(</span><span class="va">df2</span>, negative_val <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>, positive_val <span class="op">=</span> <span class="fl">1</span>, scale_type <span class="op">=</span> <span class="st">'bipolar'</span><span class="op">)</span></span>
-<span><span class="va">df3</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/pci.html">pci</a></span><span class="op">(</span><span class="va">data</span>,</span>
+<span>                 scale_type <span class="op">=</span> <span class="st">'bipolar_with_neutral'</span>,</span>
+<span>                 min_scale_value <span class="op">=</span> <span class="op">-</span><span class="fl">1</span>,</span>
+<span>                 max_scale_value <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>Visualize with a bubble plot:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The bubble function creates a bubble plot to visualize the PCI results.</span></span>
 <span><span class="co"># You can customize the colors and title as per your preferences.</span></span>
-<span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bubble.html">bubble</a></span><span class="op">(</span><span class="va">df3</span>,</span>
-<span>               scale_type <span class="op">=</span> <span class="st">'bipolar'</span>,</span>
-<span>               ylim_range <span class="op">=</span> <span class="fl">1</span>,</span>
+<span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/bubble.html">bubble</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df3</span>,</span>
+<span>               scale_type <span class="op">=</span> <span class="st">'bipolar_with_neutral'</span>,</span>
+<span>               ylim_range <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>               bubble_color <span class="op">=</span> <span class="st">'lightblue'</span>,</span>
 <span>               bubble_stroke <span class="op">=</span> <span class="st">'darkblue'</span>,</span>
 <span>               title <span class="op">=</span> <span class="st">'Custom Bubble Colors'</span><span class="op">)</span></span>
@@ -214,8 +216,8 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Francesca Belem Lopes Palmeira <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7597-1157" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Bruna Wundervald <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8163-220X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Francesca Belem Lopes Palmeira <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7597-1157" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Bruna Wundervald <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-8163-220X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -230,7 +232,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
 </div>
 
     </footer>

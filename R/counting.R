@@ -2,25 +2,23 @@
 #' Create a Count Table with Percentages, Mean, and SD
 #'
 #' This function takes a data frame and computes the count and percentage of
-#' each value across specified columns. It also calculates the weighted mean and
-#' standard deviation for each variable. The output is a summary data frame
-#' useful for analyzing distributions of ordinal or Likert-type scales.
+#' each unique value across specified columns. It also calculates the weighted mean
+#' and weighted standard deviation for each variable.
+#'
+#' The output is useful for summarizing responses from ordinal or Likert-type items,
+#' showing how values are distributed and summarized across variables.
 #'
 #' @param df1 A data frame containing the variables to summarize.
 #' @param cols A character vector with the names of the columns to include in the analysis.
-#' @return A data frame in wide format containing:
+#'
+#' @return A data frame in wide format including:
 #' \itemize{
-#'   \item Counts of each value per variable
-#'   \item Percentages of each value per variable
-#'   \item Weighted mean
-#'   \item Weighted standard deviation
+#'   \item Counts and percentages for each unique value.
+#'   \item Weighted mean and standard deviation.
 #' }
-#' @examples
-#' df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
-#'                   C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
-#' counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
+#'
 #' @export
-counting <- function(df1, cols) {
+counting <- function(df1, cols = names(df1)) {
   df1 %>%
     dplyr::select(all_of(cols)) %>%
     tidyr::pivot_longer(everything()) %>%

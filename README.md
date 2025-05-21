@@ -86,7 +86,7 @@ Example dataset:
 df1 <- data.frame(
   A = c(-1, -1, -1, 0, -1),
   B = c(-1, 1, 0, -1, 1),
-  C = c(1, 1, 1, 0, -1),
+  C = c(0, 0, 1, 0, -1),
   D = c(0, -1, 1, 1, 1),
   E = c(1, 1, 0, -1, -1)
 )
@@ -95,15 +95,17 @@ df1 <- data.frame(
 Count responses:
 
 ``` r
-df2 <- counting(df1)
-df2
+data <- counting(df1, cols = names(df1)[2:6])
+data
 ```
 
 Calculate PCI:
 
 ``` r
-df3 <- pci(df2, negative_val = -1, positive_val = 1, scale_type = 'bipolar')
-df3
+data <- pci(data,
+                 scale_type = 'bipolar_with_neutral',
+                 min_scale_value = -1,
+                 max_scale_value = 1)
 ```
 
 Visualize with a bubble plot:
@@ -111,9 +113,9 @@ Visualize with a bubble plot:
 ``` r
 # The bubble function creates a bubble plot to visualize the PCI results.
 # You can customize the colors and title as per your preferences.
-plot <- bubble(df3,
-               scale_type = 'bipolar',
-               ylim_range = 1,
+plot <- bubble(data = df3,
+               scale_type = 'bipolar_with_neutral',
+               ylim_range = 3,
                bubble_color = 'lightblue',
                bubble_stroke = 'darkblue',
                title = 'Custom Bubble Colors')

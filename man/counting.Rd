@@ -23,8 +23,8 @@ A data frame in wide format containing:
 }
 
 A data frame with computed statistics, including counts, percentages, means, and standard deviations.
-df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1),
-C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
+                  C = c(0, 0, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
 counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
 }
 \description{
@@ -39,6 +39,6 @@ means, and standard deviations for each unique value in the selected columns.
 }
 \examples{
 df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
-                  C = c(1, 1, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+                  C = c(0, 0, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
 counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
 }

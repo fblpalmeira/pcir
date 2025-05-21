@@ -665,22 +665,24 @@ GitHub:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>  <span class="at">A =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>),</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">B =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>),</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">C =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>),</span>
 <span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">D =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
 <span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">E =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>)</span>
 <span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>)</span></code></pre></div>
 <p>Count responses:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> <span class="fu">counting</span>(df1)</span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>df2</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">counting</span>(df1, <span class="at">cols =</span> <span class="fu">names</span>(df1)[<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>])</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>data</span></code></pre></div>
 <p>Calculate PCI:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>df3 <span class="ot">&lt;-</span> <span class="fu">pci</span>(df2, <span class="at">negative_val =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">positive_val =</span> <span class="dv">1</span>, <span class="at">scale_type =</span> <span class="st">&#39;bipolar&#39;</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>df3</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">pci</span>(data,</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>                 <span class="at">scale_type =</span> <span class="st">&#39;bipolar_with_neutral&#39;</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>                 <span class="at">min_scale_value =</span> <span class="sc">-</span><span class="dv">1</span>,</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>                 <span class="at">max_scale_value =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p>Visualize with a bubble plot:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># The bubble function creates a bubble plot to visualize the PCI results.</span></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co"># You can customize the colors and title as per your preferences.</span></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">bubble</span>(df3,</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>               <span class="at">scale_type =</span> <span class="st">&#39;bipolar&#39;</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>               <span class="at">ylim_range =</span> <span class="dv">1</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>plot <span class="ot">&lt;-</span> <span class="fu">bubble</span>(<span class="at">data =</span> df3,</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>               <span class="at">scale_type =</span> <span class="st">&#39;bipolar_with_neutral&#39;</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>               <span class="at">ylim_range =</span> <span class="dv">3</span>,</span>
 <span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>               <span class="at">bubble_color =</span> <span class="st">&#39;lightblue&#39;</span>,</span>
 <span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>               <span class="at">bubble_stroke =</span> <span class="st">&#39;darkblue&#39;</span>,</span>
 <span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>               <span class="at">title =</span> <span class="st">&#39;Custom Bubble Colors&#39;</span>)</span>

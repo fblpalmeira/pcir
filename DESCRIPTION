@@ -31,5 +31,5 @@ Config/Needs/website: true
 URL: https://github.com/fblpalmeira/pcir,
      https://fblpalmeira.github.io/pcir
 BugReports: https://github.com/fblpalmeira/pcir/issues
-Date: 2025-05-07
+Date: 2025-05-21
 
