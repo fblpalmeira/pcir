@@ -14,31 +14,41 @@ counting(df1, cols)
 \item{cols}{A vector of column names to be included in the calculation.}
 }
 \value{
-A data frame in wide format containing:
+A data frame in wide format including:
 \itemize{
-\item Counts of each value per variable
-\item Percentages of each value per variable
-\item Weighted mean
-\item Weighted standard deviation
+\item Counts and percentages for each unique value.
+\item Weighted mean and standard deviation.
 }
 
-A data frame with computed statistics, including counts, percentages, means, and standard deviations.
-df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
-                  C = c(0, 0, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
-counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
+A data frame in wide format including:
+\itemize{
+\item Count and percentage for each value per variable
+\item Weighted mean
+\item Weighted standard deviation (SD)
+\item Total number of observations per variable
+}
 }
 \description{
 This function takes a data frame and computes the count and percentage of
-each value across specified columns. It also calculates the weighted mean and
-standard deviation for each variable. The output is a summary data frame
-useful for analyzing distributions of ordinal or Likert-type scales.
+each unique value across specified columns. It also calculates the weighted mean
+and weighted standard deviation for each variable.
 
 Create a count table with percentages, mean, and standard deviation.
 This function takes a data frame, computes summary statistics like counts, percentages,
 means, and standard deviations for each unique value in the selected columns.
 }
+\details{
+The output is useful for summarizing responses from ordinal or Likert-type items,
+showing how values are distributed and summarized across variables.
+}
 \examples{
-df1 <- data.frame(A = c(-1, -1, -1, 0, -1), B = c(-1, 1, 0, -1, 1)),
-                  C = c(0, 0, 1, 0, -1), D = c(0, -1, 1, 1, 1), E = c(1, 1, 0, -1, -1))
+df1 <- data.frame(
+  A = c(-1, -1, -1, 0, -1),
+  B = c(-1, 1, 0, -1, 1),
+  C = c(0, 0, 1, 0, -1),
+  D = c(0, -1, 1, 1, 1),
+  E = c(1, 1, 0, -1, -1)
+)
 counting(df1, cols = c('A', 'B', 'C', 'D', 'E'))
+
 }

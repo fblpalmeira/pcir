@@ -12,7 +12,7 @@ Potential for Conflict Index (PCI).
 
 \itemize{
 \item \code{counting()}: Summarize data by calculating counts, percentages, means, and standard deviations.
-\item \code{pci()}: Compute the Potential for Conflict Index (PCI) from summary data.
+\item \code{pci()}: Compute the Potential for Conflict Index (PCI2) from summary data.
 \item \code{bubble()}: Create a bubble plot to visualize PCI results.
 }
 }
